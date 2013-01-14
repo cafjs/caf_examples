@@ -1,0 +1,110 @@
+{
+  "name": "caf_turtles",
+  "version": "0.0.1",
+  "dependencies": {
+    "caf_core": {
+      "version": "0.0.1",
+      "dependencies": {
+        "express": {
+          "version": "2.5.8",
+          "dependencies": {
+            "connect": {
+              "version": "1.8.5",
+              "dependencies": {
+                "formidable": {
+                  "version": "1.0.9"
+                }
+              }
+            },
+            "mime": {
+              "version": "1.2.4"
+            },
+            "qs": {
+              "version": "0.4.2"
+            },
+            "mkdirp": {
+              "version": "0.3.0"
+            }
+          }
+        },
+        "async": {
+          "version": "0.1.9"
+        },
+        "redis": {
+          "version": "0.7.2"
+        }
+      }
+    },
+    "caf_pull": {
+      "version": "0.0.1"
+    },
+    "caf_security": {
+      "version": "0.0.1",
+      "dependencies": {
+        "caf_cli": {
+          "version": "0.0.1",
+          "dependencies": {
+            "request": {
+              "version": "2.9.202"
+            }
+          }
+        },
+        "passport": {
+          "version": "0.1.12",
+          "dependencies": {
+            "pkginfo": {
+              "version": "0.2.3"
+            }
+          }
+        },
+        "password-hash": {
+          "version": "1.2.1"
+        }
+      }
+    },
+    "caf_deploy": {
+      "version": "0.0.1",
+      "dependencies": {
+        "rimraf": {
+          "version": "2.0.1"
+        },
+        "tar": {
+          "version": "0.1.13",
+          "dependencies": {
+            "inherits": {
+              "version": "1.0.0"
+            },
+            "block-stream": {
+              "version": "0.0.5"
+            },
+            "fstream": {
+              "version": "0.1.18",
+              "dependencies": {
+                "rimraf": {
+                  "version": "2.0.1"
+                },
+                "mkdirp": {
+                  "version": "0.3.2"
+                },
+                "graceful-fs": {
+                  "version": "1.1.8"
+                }
+              }
+            }
+          }
+        },
+        "vmcjs": {
+          "version": "0.1.8",
+          "dependencies": {
+            "async": {
+              "version": "0.1.18"
+            }
+          }
+        }
+      }
+    },
+    "caf_session": {
+      "version": "0.0.1"
+    }
+  }
+}

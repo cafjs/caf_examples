@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: cookies</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Module: cookies</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+    cookies
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+            <div class="description"><p>Functions to manipulate cookies in a way compatible with the base-64 encoding
+needed by Cloud Foundry.</p></div>
+        
+        
+        
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>cookies.js, line 18</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+        
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="parseCookies"><span class="type-signature">&lt;static> </span>parseCookies<span class="signature">(str)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Parses cookies from an string, list of strings or
+nested list of strings.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>str</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A string, list of strings or
+nested list of strings representing cookies.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>cookies.js, line 111</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>A cookie jar with parsed cookies.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="constructor"><span class="type-signature">&lt;inner> </span>constructor<span class="signature">(spec)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Cookie factory method.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>spec</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">{name: string, value: value}</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A cookie description.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>cookies.js, line 35</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>A cookie object.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="newCookieJar"><span class="type-signature">&lt;inner> </span>newCookieJar<span class="signature">(cookieArray)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>CookieJar factory method.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>cookieArray</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A collection of cookies.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>cookies.js, line 70</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>A cookie jar containing the cookies.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-cookies.html">cookies</a></li><li><a href="module-json_rpc.html">json_rpc</a></li><li><a href="module-main.html">main</a></li><li><a href="module-myutils.html">myutils</a></li></ul><h3>Components</h3><ul><li><a href="ca_default_methods.html">ca_default_methods</a></li><li><a href="ca_main.html">ca_main</a></li><li><a href="cron_lease.html">cron_lease</a></li><li><a href="cron_pulser.html">cron_pulser</a></li><li><a href="cron_ripper.html">cron_ripper</a></li><li><a href="cron_security.html">cron_security</a></li><li><a href="gen_ca.html">gen_ca</a></li><li><a href="gen_component.html">gen_component</a></li><li><a href="gen_container.html">gen_container</a></li><li><a href="gen_cron.html">gen_cron</a></li><li><a href="gen_handler.html">gen_handler</a></li><li><a href="gen_pipe.html">gen_pipe</a></li><li><a href="gen_plug.html">gen_plug</a></li><li><a href="gen_proxy.html">gen_proxy</a></li><li><a href="gen_redis_plug.html">gen_redis_plug</a></li><li><a href="gen_supervisor.html">gen_supervisor</a></li><li><a href="gen_transactional.html">gen_transactional</a></li><li><a href="pipe_main.html">pipe_main</a></li><li><a href="plug_ca_handler.html">plug_ca_handler</a></li><li><a href="plug_ca_inqueue.html">plug_ca_inqueue</a></li><li><a href="plug_checkpoint.html">plug_checkpoint</a></li><li><a href="plug_checkpoint_lua.html">plug_checkpoint_lua</a></li><li><a href="plug_cloudfoundry.html">plug_cloudfoundry</a></li><li><a href="plug_dispatcher.html">plug_dispatcher</a></li><li><a href="plug_factory.html">plug_factory</a></li><li><a href="plug_lease.html">plug_lease</a></li><li><a href="plug_log.html">plug_log</a></li><li><a href="plug_lookup.html">plug_lookup</a></li><li><a href="plug_uniquifier.html">plug_uniquifier</a></li><li><a href="proxy_inqueue.html">proxy_inqueue</a></li><li><a href="proxy_log.html">proxy_log</a></li><li><a href="sup_main.html">sup_main</a></li></ul><h3>Global</h3><ul><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#newInstance">newInstance</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3</a> on Wed Jan 09 2013 18:12:01 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

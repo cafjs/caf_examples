@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Onyx Mail</title>
+	<!-- -->
+        <link rel="apple-touch-icon" href="images/mail.png"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<!-- -->
+        <link rel=stylesheet href="enyo/build/enyo.css">
+        <link rel=stylesheet href="enyo/build/app.css">
+        <script src="enyo/build/enyo.js"></script>
+        <script src="enyo/build/app.js"></script>
+        <script src="source/package.js"></script>
+
+	<style>
+		body {
+			overflow: hidden;
+		}
+		#app_left {
+			width: 240px;
+		}
+		#app_left2 {
+			width: 332px;
+			box-shadow: -3px 0px 12px rgba(0, 0, 0, 0.3);
+		}
+		#app_body {
+			box-shadow: -3px 0px 12px rgba(32, 32, 32, 0.3);
+		}
+		.divider {
+			background: #E3E4E6 url(enyo/lib/onyx/images/gradient.png) repeat-x bottom;
+			color: #3897E9;
+			font-family: Segoe UI, Neue Helvetica, sans-serif;
+			font-size: 16px;
+			font-weight: bold;
+			padding: 10px;
+		}
+		.mailbox-item {
+			padding: 16px 12px;
+			border-bottom: 1px solid #ddd;
+			border-top: 1px solid transparent;
+			display: block;
+		}
+		.header-item {
+			padding: 16px;
+			border-bottom: 1px solid #DDD;
+			overflow: hidden;
+		}
+		.selected-item {
+			border-top: 1px solid #88C7FD;
+			border-bottom: 1px solid #88C7FD;
+			background: #CDE8FE url(images/gradient-invert.png) repeat-x;
+		}
+	</style>
+</head>
+<body class="onyx">
+	<script>
+		new App().write();
+	</script>
+</body>
+</html>
+

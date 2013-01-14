@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cloud Assistant Framework</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="bootstrap/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <div id="session" class="pull-right">
+            <ul class="nav">
+              <li> <a href="app.html">Login/Sign up</a></li>
+            </ul>
+          </div>
+          <ul class="nav">
+            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="docs.html">Docs</a></li>
+            <li><a href="examples.html">Examples</a></li>
+<!--            <li><a href="app.html" target="_blank" onClick="return loadApp(location, 'helloworld', this, 'antonio','asdsdsad#ewewe#asdda');">Examples</a></li> -->
+             
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1>Cloud Assistant Framework</h1>
+        <p></p>
+        <p> - You want to port a native app to a browser, but don't know what to do with the bits that are not UI.</p>
+        <p> - Your battery operated gadget has an Internet presence, but it is never on-line when cloud services or mobile apps want to talk to it.</p>
+        <p> - Your app should not depend on Facebook&trade; or Google+&trade;, but your potential customers will never friend themselves just for you.</p>
+        <p> You need cloud proxies!</p>
+        <p> Active proxies co-designed with your UI to provide a unique, persistent  cloud presence for each instance of your app.</p>  
+<p> And this is what the Cloud Assistant Framework (CAF) is all about. A Cloud Assistant (CA) is a light-weight and stateful proxy written in JavaScript (node.js) that once started, continues to run indefinitely, with or without apps running on any client device, with maintenance costs of cents per year (per instance) while scaling to billions. </p>
+        <p><a class="btn btn-primary btn-large" href="about.html">Learn more &raquo;</a></p>
+      </div>
+
+      <!-- Row of columns -->
+      <div class="row">
+        <div class="span4">
+          <h2>Programming Model</h2>
+          <p>We want to simplify aspects of distributed programming so that front-end programmers with no back-end experience can co-design apps with CAs using familiar abstractions.</p> 
+<p>The CAF model was inspired by Erlang/OTP Actors and extended with persistent sessions, distributed sharing abstractions, checkpointing of consistent state, a security architecture based on linked local name spaces, and opportunities for customization that use dependency injection.<p> 
+          <p><a class="btn" href="framework.html">CAF Design &raquo;</a></p>
+        </div>
+        <div class="span4">
+          <h2>Try a Few Examples</h2>
+          <p>You have already tried one! This website is a CA-enabled web app, and when you create an account (needed to run the examples) we create a CA just for you. This CA will always be running and does things on your behalf. When you actually sign in again, the browser app creates a session with your CA and exchanges pending notifications and new requests. So what does your CA actually do? Not much for now. It tracks the security tokens of CAs that you create so that we can  re-create your stuff when you login again (possibly in a different device).</p>
+          <p> But the sky is the limit. An active proxy can monitor the health of your apps and send you hate mail, track github commits to update documentation of your plugins, aggregate and customize content before you need it, and facilitate your interactions with other users. Want to know exactly when someone answers that critical forum question? Your CA can ping you on whichever device is active.</p>
+          <p><a class="btn" href="examples.html">View details &raquo;</a></p>
+       </div>
+        <div class="span4">
+          <h2>Roll Your Own</h2>
+	  <p>Using Turtles, our deployer app, it is really easy to get your app up and running and host its CAs for other people. The idea is to create a (compressed) tarball with your app, make it visible with a public url (e.g., using HP Cloud Object Storage or Dropbox) and tell Turtles the url. After that your Turtles CA will track that url and send out prompts to deploy or update the app when its contents change.</p>
+         <p> But before doing that you may want to read our Getting Started guide and look at the source code of our examples (including this Web site) in github://....</p> 
+
+          <p><a class="btn" href="gettingstarted.html">Getting Started &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+<p><b>Note:</b> In honor of Cinderella, all example CAs and deployed apps turn into pumpkins every day at 11:59pm PST. This website is here to let you play and get creative with some simple examples, and is not intended to support app deployment for real. These are early days and we cannot guarantee any security or reliability properties, so please do NOT re-use important passwords or e-mail information. </p>
+
+      <footer>
+        <p>&copy; HP Labs 2012</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="bootstrap/js/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <script src="bootstrap/js/bootstrap-alert.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="bootstrap/js/bootstrap-tab.js"></script>
+    <script src="bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="bootstrap/js/bootstrap-popover.js"></script>
+    <script src="bootstrap/js/bootstrap-button.js"></script>
+    <script src="bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="bootstrap/js/bootstrap-typeahead.js"></script>
+
+    <script src="setup.js"></script>
+
+  </body>
+</html>

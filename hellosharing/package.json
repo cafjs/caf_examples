@@ -1,0 +1,15 @@
+{
+  "name": "caf_hellosharing",
+  "description": "Cloud Assistants Example 2",
+  "version": "0.0.1",
+  "author": "Antonio Lain <antlai@cafjs.com>",
+  "dependencies": {
+      "caf_core" : ">= 0.0.1",
+      "caf_security" : ">= 0.0.1",
+      "caf_sharing" : ">= 0.0.1",
+      "caf_session" : ">= 0.0.1",
+      "caf_profiler" : ">= 0.0.1"
+   },
+  "main": "index",
+  "engines": { "node": ">= 0.8.1 " }
+}

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Component: plug_lease</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Component: plug_lease</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+    plug_lease
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+            <div class="description"><p>A plug to an external service to maintain leases on CAs.</p>
+
+<p>A lease protects a binding between a CA id and a location. This
+binding can only be changed by the owner of the lease, avoiding
+duplication of CAs across the data center.</p>
+
+<p>If the node owning the lease crashes, the lease eventually expires.
+At that point a different, randomly
+picked  node can grab a new lease and recreate the CA safely.</p></div>
+        
+        
+        
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>plug_lease.js, line 17</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+        
+        
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="gen_plug.html">gen_plug</a></li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="grabLease"><span class="type-signature"></span>grabLease<span class="signature">(id, cb0)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Grabs a lease that guarantees exclusive ownership of a CA by this node.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>An identifier for the CA.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>cb0</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function({remoteNode:string})</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A callback with optional
+(error) argument containing the current owner if we fail to acquire
+the lease. Null error argument and empty array data if we succeeded.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>plug_lease.js, line 51</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renewLeases"><span class="type-signature"></span>renewLeases<span class="signature">(ids, cb0)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Renews a list of leases currently owned by this node.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>ids</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A list of identifiers for local CAs.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>cb0</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function(Object, Array.&lt;string>)</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A callback with either
+an error (first) argument or a (second) argument with a list of CA Ids
+ that we failed to renew.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>plug_lease.js, line 68</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-cookies.html">cookies</a></li><li><a href="module-json_rpc.html">json_rpc</a></li><li><a href="module-main.html">main</a></li><li><a href="module-myutils.html">myutils</a></li></ul><h3>Components</h3><ul><li><a href="ca_default_methods.html">ca_default_methods</a></li><li><a href="ca_main.html">ca_main</a></li><li><a href="cron_lease.html">cron_lease</a></li><li><a href="cron_pulser.html">cron_pulser</a></li><li><a href="cron_ripper.html">cron_ripper</a></li><li><a href="cron_security.html">cron_security</a></li><li><a href="gen_ca.html">gen_ca</a></li><li><a href="gen_component.html">gen_component</a></li><li><a href="gen_container.html">gen_container</a></li><li><a href="gen_cron.html">gen_cron</a></li><li><a href="gen_handler.html">gen_handler</a></li><li><a href="gen_pipe.html">gen_pipe</a></li><li><a href="gen_plug.html">gen_plug</a></li><li><a href="gen_proxy.html">gen_proxy</a></li><li><a href="gen_redis_plug.html">gen_redis_plug</a></li><li><a href="gen_supervisor.html">gen_supervisor</a></li><li><a href="gen_transactional.html">gen_transactional</a></li><li><a href="pipe_main.html">pipe_main</a></li><li><a href="plug_ca_handler.html">plug_ca_handler</a></li><li><a href="plug_ca_inqueue.html">plug_ca_inqueue</a></li><li><a href="plug_checkpoint.html">plug_checkpoint</a></li><li><a href="plug_checkpoint_lua.html">plug_checkpoint_lua</a></li><li><a href="plug_cloudfoundry.html">plug_cloudfoundry</a></li><li><a href="plug_dispatcher.html">plug_dispatcher</a></li><li><a href="plug_factory.html">plug_factory</a></li><li><a href="plug_lease.html">plug_lease</a></li><li><a href="plug_log.html">plug_log</a></li><li><a href="plug_lookup.html">plug_lookup</a></li><li><a href="plug_uniquifier.html">plug_uniquifier</a></li><li><a href="proxy_inqueue.html">proxy_inqueue</a></li><li><a href="proxy_log.html">proxy_log</a></li><li><a href="sup_main.html">sup_main</a></li></ul><h3>Global</h3><ul><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#newInstance">newInstance</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3</a> on Wed Jan 09 2013 18:12:02 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

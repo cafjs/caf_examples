@@ -1,0 +1,31 @@
+"use strict";
+var caf = require('caf_core');
+
+exports.methods = {
+    '__ca_init__' : function(cb) {
+        this.state.counter = -1;
+        cb(null);
+    },
+    '__ca_resume__' : function(cp, cb) {
+        this.state = (cp && cp.state) || {};
+        cb(null);
+    },
+    '__ca_pulse__' : function(cb) {
+        this.state.counter = this.state.counter + 1;
+        if (this.state.counter % 5 == 0) {
+            this.$.session.notify([this.state.counter], 'default');
+        }
+        cb(null);
+    },
+    'increment' : function(inc, cb) {
+        this.state.counter = this.state.counter + inc;
+        if (this.state.counter % 5 == 0) {
+            this.$.session.notify([this.state.counter], 'default');
+        }
+        cb(null, {"counter" :  this.state.counter });
+    }
+};
+
+
+caf.init(__dirname, {});
+

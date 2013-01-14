@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JustOnce Crashed!!!</title>
+  </head>  
+  <body>
+<p style="font-size:32px;text-align:center;"> Oops !!</p>
+<button type="button" onclick="window.location.replace('app.html')">Restart JustOnce</button>
+  </body>  
+</html>

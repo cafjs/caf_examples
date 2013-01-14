@@ -1,0 +1,12 @@
+{
+  "name": "caf_cli_helloworld",
+  "description": "Cloud Assistants example of using the CLI",
+  "version": "0.0.1",
+  "author": "Antonio Lain <antlai@cafjs.com>",
+  "dependencies": {
+      "caf_core" : ">= 0.0.1",
+      "caf_cli" : ">= 0.0.1"
+  },
+  "main": "index",
+  "engines": { "node": ">= 0.4.1 " }
+}

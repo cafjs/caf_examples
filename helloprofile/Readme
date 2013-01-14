@@ -1,0 +1,48 @@
+This example tries to simulate the load of a generic CA.
+
+A CA can execute methods, do autonomous computation (i.e., pulse), send
+asynchronous notifications and checkpoint (after executed methods or pulse).
+
+The model parameters that we can control are:
+
+in framework.json under :
+
+           "module": "cron_pulser",
+            "name": "pulser",
+            "description": "Cron job for enabling autonomous computation of CAs",
+            "env": {
+-->                "interval": 1
+
+            }
+
+set the interval in seconds to how often do you want a pulse operation to 
+get triggered.
+
+
+in ca.json under:
+       {
+            "module": "caf_prop/proxy",
+            "name": "prop",
+            "description": "Provides access to static properties defined in this env",
+            "env" : {
+                "checkpointSize" : 300,
+                "messageSize" : 10,
+                "notifDivider" : 2,
+                "cpuOverhead" : 2200
+
+
+we have:
+
+messageSize : replies and notifies include a list of  integers of length messageSize (starting from 0)  (the integer has one digit) that also becomes part of the checkpoint (Note that the list is JSON serialized into a string changing its size but it should grow linearly with messageSize). 
+
+
+checkpointSize: this adds a list of integers  (the integer has one digit) of length (checkpointSize- messageSize) to the checkpoint. To know the size in bytes
+of the checkpoint use the  STRLEN command in redis , e.g., 
+STRLEN data:me_hello0
+
+notifDivider: one in every notifDivider times that we get a pulse we send
+a notification to the client.
+
+cpuOverhead: perform some computation in every request or pulse. CPU overhead
+should be linear with 'cpuOverhead' for reasonably large overheads
+ 

@@ -1,0 +1,33 @@
+.panels > * {
+	width:400px;
+	box-shadow: -4px 0px 4px rgba(0,0,0,0.3);
+	-moz-box-shadow: -4px 0px 4px rgba(0,0,0,0.3);
+	-webkit-box-shadow: -4px 0px 4px rgba(0,0,0,0.3);
+}
+
+@media all and (max-width: 600px) {
+    .panels > * {
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
+
+.footer-toolbar {
+    height:50px;
+}
+
+.header-toolbar {
+    height:60px;
+}
+
+.app-item {
+    margin-top: 10px;
+}
+
+.wide {
+	min-width:99%;
+}
+
+.tall {
+	min-height:99%;
+}

@@ -1,0 +1,11 @@
+{
+  "name": "caf_helloworld",
+  "description": "Cloud Assistants tutorial 1c ",
+  "version": "0.0.1",
+  "author": "Antonio Lain <antonio.lain@hp.com>",
+  "dependencies": {
+      "caf_core" : ">= 0.0.1"
+  },
+  "main": "index",
+  "engines": { "node": ">= 0.4.1 " }
+}

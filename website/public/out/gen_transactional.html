@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Component: gen_transactional</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Component: gen_transactional</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+    gen_transactional
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+            <div class="description"><p>Generic transactional plug that maintains state across message invocations.</p>
+
+<p>Transactional plugs participate in a two-phase commit protocol with other 
+(local) transactional plugs.</p></div>
+        
+        
+        
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>gen_transactional.js, line 17</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+        
+        
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="gen_plug.html">gen_plug</a></li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="isTransactional"><span class="type-signature"></span>isTransactional<span class="type-signature"> :boolean</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Run-time type information.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>gen_transactional.js, line 39</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="__ca_abort__"><span class="type-signature"></span>__ca_abort__<span class="signature">(cb)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Aborts the transaction.</p>
+
+<p>CAF calls this method when an error was returned
+by the handler, or any transactional plug did not &#39;prepare&#39;
+OK. </p>
+
+<p>Note that an error during (remote) checkpointing cannot
+guarantee that the checkpoint was not made durable, and we need to
+assume that it did; this means that we need to shutdown the CA.</p>
+
+<p>An implementation of this method should undo state changes and
+ignore deferred  external interactions.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A callback to continue after aborting.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>gen_transactional.js, line 143</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="__ca_begin__"><span class="type-signature"></span>__ca_begin__<span class="signature">(msg, cb)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Begins a two phase commit transaction.</p>
+
+<p>CAF calls this method before the application handler processes
+a message. A read-only copy of the message is passed as an argument
+to facilitate configuration.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>msg</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The message to be processed.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A callback to continue the transaction.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>gen_transactional.js, line 79</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="__ca_commit__"><span class="type-signature"></span>__ca_commit__<span class="signature">(cb)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Commits the transaction.</p>
+
+<p>Called by CAF when all the<code>prepare</code> calls to transactional
+plugs were
+successful, and the new state  of those plugs has been
+checkpointed using an external service (e.g., Redis).</p>
+
+<p>An error during commit shutdowns the CA since we cannot abort
+committed transactions. When the
+shutdown CA gets recreated, possibly in a different server, all
+the commit operations are retried. It is the responsability of
+the plug implementation to make commit operations idempotent.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A callback to continue after commiting.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>gen_transactional.js, line 119</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="__ca_init__"><span class="type-signature"></span>__ca_init__<span class="signature">(cb)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Initializes the state of this plug from scratch.</p>
+
+<p>This method is called by CAF only once, i.e.,  when the plug is created.</p>
+
+<p>The default implementation does nothing.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A callback to continue after initialization.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>gen_transactional.js, line 47</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="__ca_prepare__"><span class="type-signature"></span>__ca_prepare__<span class="signature">(cb)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Prepares to commit the transaction.</p>
+
+<p>CAF calls this method after the handler has succesfully
+processed the message.</p>
+
+<p>If ready to commit, it returns in the callback a JSON
+serializable data structure reflecting the new state after
+processing the message. </p>
+
+<p>To abort the transaction we return an error in the (node.js) callback.
+This will abort all the transactional plugs associated with the CA.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A callback to continue or abort the transaction.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>gen_transactional.js, line 97</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="__ca_resume__"><span class="type-signature"></span>__ca_resume__<span class="signature">(cp, cb)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Initializes the state of this plug from a previous checkpoint.</p>
+
+<p>This method can be called by CAF many times, for example, after
+recovering  from a failure or to enable migration.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>cp</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The last checkpoint of the state of this plug.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A callback to continue after resuming.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>gen_transactional.js, line 63</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-cookies.html">cookies</a></li><li><a href="module-json_rpc.html">json_rpc</a></li><li><a href="module-main.html">main</a></li><li><a href="module-myutils.html">myutils</a></li></ul><h3>Components</h3><ul><li><a href="ca_default_methods.html">ca_default_methods</a></li><li><a href="ca_main.html">ca_main</a></li><li><a href="cron_lease.html">cron_lease</a></li><li><a href="cron_pulser.html">cron_pulser</a></li><li><a href="cron_ripper.html">cron_ripper</a></li><li><a href="cron_security.html">cron_security</a></li><li><a href="gen_ca.html">gen_ca</a></li><li><a href="gen_component.html">gen_component</a></li><li><a href="gen_container.html">gen_container</a></li><li><a href="gen_cron.html">gen_cron</a></li><li><a href="gen_handler.html">gen_handler</a></li><li><a href="gen_pipe.html">gen_pipe</a></li><li><a href="gen_plug.html">gen_plug</a></li><li><a href="gen_proxy.html">gen_proxy</a></li><li><a href="gen_redis_plug.html">gen_redis_plug</a></li><li><a href="gen_supervisor.html">gen_supervisor</a></li><li><a href="gen_transactional.html">gen_transactional</a></li><li><a href="pipe_main.html">pipe_main</a></li><li><a href="plug_ca_handler.html">plug_ca_handler</a></li><li><a href="plug_ca_inqueue.html">plug_ca_inqueue</a></li><li><a href="plug_checkpoint.html">plug_checkpoint</a></li><li><a href="plug_checkpoint_lua.html">plug_checkpoint_lua</a></li><li><a href="plug_cloudfoundry.html">plug_cloudfoundry</a></li><li><a href="plug_dispatcher.html">plug_dispatcher</a></li><li><a href="plug_factory.html">plug_factory</a></li><li><a href="plug_lease.html">plug_lease</a></li><li><a href="plug_log.html">plug_log</a></li><li><a href="plug_lookup.html">plug_lookup</a></li><li><a href="plug_uniquifier.html">plug_uniquifier</a></li><li><a href="proxy_inqueue.html">proxy_inqueue</a></li><li><a href="proxy_log.html">proxy_log</a></li><li><a href="sup_main.html">sup_main</a></li></ul><h3>Global</h3><ul><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#newInstance">newInstance</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3</a> on Wed Jan 09 2013 18:12:01 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

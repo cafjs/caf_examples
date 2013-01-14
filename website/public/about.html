@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>About Cloud Assistant Framework</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="bootstrap/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <div id="session" class="pull-right">
+            <ul class="nav">
+              <li> <a href="app.html">Login/Sign up</a></li>
+            </ul>
+          </div>
+          <ul class="nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="active"><a href="about.html">About</a></li>
+            <li><a href="docs.html">Docs</a></li>
+            <li><a href="examples.html">Examples</a></li>
+<!--            <li><a href="app.html" target="_blank" onClick="return loadApp(location, 'helloworld', this, 'antonio','asdsdsad#ewewe#asdda');">Examples</a></li> -->
+             
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1>CAF Scenarios</h1>
+        <p></p>
+        <p>In CAF each web app instance has its own CA: an autonomous, stateful, permanent cloud proxy co-designed with the application. A CA simplifies integration with cloud services or the external world. Let's look at some examples: </p>       
+      </div>
+
+      <!-- Row of columns -->
+      <div class="row">
+        <div class="span4">
+          <h2>From native to browser</h2>
+          <div style="text-align: center;">
+            <img src="images/native.jpg" />
+          </div>
+<p>Rich native mobile apps complement a front-end with a set of local background  services (i.e., processes) that interact with each other and  the front-end by using a local bus abstraction (e.g., D-Bus in Linux).</p> 
+
+<p> Replacing a native front-end by an HTML5/JS one is becoming easier with the increase in performance and capabilities of new browsers. The issue is what to do with the local services. On a closed platform like Apple iOS, we cannot install a plugin or a custom browser to implement them.</p> 
+
+<p> A naive solution is to assume that the local bus is now the Internet, and background services can simply become Web services. This is not going to work. Latencies across the Internet are many orders of magnitud larger. The failure mode of a Web service is very different from the one of a local process. And now we have  the hackers to worry about... </p>         
+
+<p>Instead, we want to recreate the bus and background services within a data center. In the data center we have a reliable network with very low latency. We can  monitor and quickly restart services that fail. We can also impose mandatory security policies to all the end-points. It is getting closer to what we had before within a device.</p>    
+
+<p>How to interact effectively with this remote ecosystem from a browser? We use a cloud proxy (a CA) to represent an app instance in the data center. This proxy is an active entity that has been co-designed with the app; therefore, it can save many expensive Internet round-trips. It can also pipeline requests or buffer responses to hide latency. </p>
+
+
+        </div>
+        <div class="span4">
+          <h2>Internet of Things </h2>
+          <div style="text-align: center;">
+            <img src="images/iot.jpg" />
+          </div>
+          <p>Many gadgets with an Internet presence are battery operated. They have sensors and actuators that should be accessible from anywhere. They are off more than on.</p>
+          <p> This is problematic when a cloud service or a mobile app wants to interact with them. A typical cloud service analyzes in real time a stream of external data and, using the local information provided by the gadget sensors,  makes a decision on what this device should do next. If the gadget is not on-line, the service guesses the state of its sensors, and buffers instructions until it re-connects. When several services are interacting with the same off-line device, they all have to guess and buffer; and they can have conflicting views of the gadget's state, leading to unpredictable behavior. Not great... </p>
+          <p> An active CA represents the gadget in the cloud at all times; caching the last known state of its sensors, queueing instructions until the device is ready, guessing its future state based on those queued instructions, or being a first-class citizen  in any relevant workflow. The goal is to hide to other services (or applications) that they are not interacting with the real gadget, creating the illusion that the device is always on-line.
+</p>
+
+          <p> Using CAs also simplify collaboration between devices.  CA to CA interactions in the data center are secure and reliable, have very low latency, and can be transparently deferred or re-directed when the gadget is not online.  This solves some of the problems of device-to-device direct communication. </p>
+
+       </div>
+        <div class="span4">
+          <h2>Ad-hoc social graph</h2>
+          <div style="text-align: center;">
+            <img src="images/social.jpg" />
+          </div>
+<p>Many mobile applications establish relationships between users according to user preferences. This is implemented by maintaining a social graph, which is later used to guide interactions or propagate state. Today most apps rely on Facebook or Google APIs to do so. But giving up so much control to a monopoly does not help the creativity of application writers or the privacy of consumers. </p>
+
+<p>Rolling your own social graph for your app is a daunting task. Forcing potential customers to explicitly friend each other is a non-starter. It is also difficult to secure interactions, handle failures gracefully, or maintain acceptable performance when your application becomes more popular. More importantly, most independent mobile app programmers do not want to maintain a back-end, and many consumers do not trust independent programmers to keep a back-end running long term.</p>
+
+<p> CAs can help. In the data center each user is represented by a CA. CAs negotiate edges in the social graph on behalf of their users. They can consult external services or use an algorithm to decide whether they should friend someone; when both parties agree they create the edge. In this way the creation of the graph is done securely in the background, with limited end-user involvement. Previous attempts to automate social graph creation have not been very successful, but the key difference here is that we have a particular application in mind: mistakes are less risky and graph creation algorithms can exploit the application context.</p>
+
+<p>An application-agnostic, scalable service to propagate state using the graph can help too. A trusted third-party could host this service (and the CAs) on behalf of many applications. See our discussion of Sharing Actors in <a href="framework.html#sharing">CAF Design</a>  </p>
+
+
+
+        </div>
+      </div>
+
+      <hr>
+
+
+      <footer>
+        <p>&copy; HP Labs 2012</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="bootstrap/js/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <script src="bootstrap/js/bootstrap-alert.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="bootstrap/js/bootstrap-tab.js"></script>
+    <script src="bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="bootstrap/js/bootstrap-popover.js"></script>
+    <script src="bootstrap/js/bootstrap-button.js"></script>
+    <script src="bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="bootstrap/js/bootstrap-typeahead.js"></script>
+
+    <script src="setup.js"></script>
+
+  </body>
+</html>

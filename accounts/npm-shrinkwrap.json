@@ -1,0 +1,77 @@
+{
+  "name": "caf_accounts",
+  "version": "0.0.1",
+  "dependencies": {
+    "caf_core": {
+      "version": "0.0.1",
+      "dependencies": {
+        "express": {
+          "version": "2.5.8",
+          "dependencies": {
+            "connect": {
+              "version": "1.8.5",
+              "dependencies": {
+                "formidable": {
+                  "version": "1.0.9"
+                }
+              }
+            },
+            "mime": {
+              "version": "1.2.4"
+            },
+            "qs": {
+              "version": "0.4.2"
+            },
+            "mkdirp": {
+              "version": "0.3.0"
+            }
+          }
+        },
+        "async": {
+          "version": "0.1.9"
+        },
+        "redis": {
+          "version": "0.7.2"
+        }
+      }
+    },
+    "caf_security": {
+      "version": "0.0.1",
+      "dependencies": {
+        "caf_cli": {
+          "version": "0.0.1",
+          "dependencies": {
+            "request": {
+              "version": "2.9.202"
+            }
+          }
+        },
+        "passport": {
+          "version": "0.1.12",
+          "dependencies": {
+            "pkginfo": {
+              "version": "0.2.3"
+            }
+          }
+        },
+        "password-hash": {
+          "version": "1.2.1"
+        }
+      }
+    },
+    "caf_session": {
+      "version": "0.0.1"
+    },
+    "caf_profiler": {
+      "version": "0.0.1",
+      "dependencies": {
+        "metrics": {
+          "version": "0.1.6"
+        }
+      }
+    },
+    "caf_prop": {
+      "version": "0.0.1"
+    }
+  }
+}

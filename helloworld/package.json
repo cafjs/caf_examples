@@ -1,0 +1,14 @@
+{
+  "name": "caf_helloworld",
+  "description": "Cloud Assistants minimal Example ",
+  "version": "0.0.1",
+  "author": "Antonio Lain <antlai@cafjs.com>",
+  "dependencies": {
+      "caf_core" : ">= 0.0.1",
+      "caf_security" : ">= 0.0.1",
+      "caf_session" : ">= 0.0.1",
+      "caf_profiler" : ">= 0.0.1"
+   },
+  "main": "index",
+  "engines": { "node": ">= 0.4.1 " }
+}

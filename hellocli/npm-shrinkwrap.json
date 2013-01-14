@@ -1,0 +1,47 @@
+{
+  "name": "caf_cli_helloworld",
+  "version": "0.0.1",
+  "dependencies": {
+    "caf_core": {
+      "version": "0.0.1",
+      "dependencies": {
+        "express": {
+          "version": "2.5.8",
+          "dependencies": {
+            "connect": {
+              "version": "1.8.5",
+              "dependencies": {
+                "formidable": {
+                  "version": "1.0.9"
+                }
+              }
+            },
+            "mime": {
+              "version": "1.2.4"
+            },
+            "qs": {
+              "version": "0.4.2"
+            },
+            "mkdirp": {
+              "version": "0.3.0"
+            }
+          }
+        },
+        "async": {
+          "version": "0.1.9"
+        },
+        "redis": {
+          "version": "0.7.2"
+        }
+      }
+    },
+    "caf_cli": {
+      "version": "0.0.1",
+      "dependencies": {
+        "request": {
+          "version": "2.9.202"
+        }
+      }
+    }
+  }
+}

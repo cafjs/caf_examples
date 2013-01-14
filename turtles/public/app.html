@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Turtles App Deployer</title>
+    <link rel="apple-touch-icon" href="images/deployer.png"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel=stylesheet href="enyo/build/enyo.css">
+    <link rel=stylesheet href="enyo/build/app.css">
+    <script src="enyo/build/enyo.js"></script>
+    <script src="enyo/build/app.js"></script>
+    <script src="source/package.js"></script>
+    <style>
+      remove-button {
+         float: right;
+         display: none;
+      }	
+      .description {
+         font-size: 12px;
+      }
+
+    </style>
+  </head>  
+  <body>
+    <script>
+      new App().renderInto(document.body);
+    </script>
+  </body>  
+</html>
+
