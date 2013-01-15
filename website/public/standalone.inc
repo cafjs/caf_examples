@@ -23,8 +23,9 @@
 
 <p>Clone <code>caf</code> from github (in https://github.com/cafjs/caf). Initialize submodules:</p>
 
-<pre><code>git submodule init
-git submodule update
+<pre><code>git clone  https://github.com/cafjs/caf.git
+cd caf
+git submodule update --init --recursive
 </code></pre>
 
 <h2 id="startingacloudfoundryhttproutersimulator">Starting a Cloud Foundry http router simulator</h2>
@@ -114,7 +115,7 @@ mget data:antonio_m1
 monitor
 </code></pre>
 
-<p>But in most cases it is best to use two debuggers: one to set breakpoints in the client (using the browser&#8217;s debugger) and the other one attached to CA code (i.e., using node-inspector). This allows you to examine the state of the system as you follow requests from client to CA and back. To do that, first start CAF server in debug mode:</p>
+<p>But in most cases it is best to use two debuggers: one to set breakpoints in the client (using the browser&#8217;s debugger) and the other one attached to CA code (i.e., using <code>node-inspector</code>). This allows you to examine the state of the system as you follow requests from client to CA and back. To do that, first start CAF server in debug mode:</p>
 
 <pre><code>{
     &quot;module&quot;: &quot;sup_main&quot;,
