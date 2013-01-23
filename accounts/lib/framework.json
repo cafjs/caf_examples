@@ -5,7 +5,7 @@
     "env": {
         "timeout": 10,
         "interval": 5,
-        "debugger": true
+        "debugger": false
     },
     "plugs": [
         {
@@ -54,7 +54,7 @@
             "name": "lease",
             "description": "Connector for lease renewal service\n Properties: <leaseTimeout> Time for a lease to expire in sec:\n",
             "env": {
-                "leaseTimeout" : 10
+                "leaseTimeout" : 20
                 }
         },
         {

@@ -120,7 +120,7 @@
             "env": {
                 "target" : "http://api.cafjs.com",
                 "user" : "foo@bar.com",
-                "password" : "cfpassword",
+                "password" : "Nj3dUg7N5V",
                 "memory" : 64,
                 "instances": 1,
                 "services" :["redis"]
