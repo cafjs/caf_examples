@@ -334,13 +334,11 @@ enyo.kind({
               },
               current: {},
               components: [
-                  {kind: 'enyo.Scroller', fit: true, components: [
-                       {name: 'iframe', tag: 'iframe',
-                        src: '',
-                        classes: 'enyo-fit wide tall',
-                        attributes: {onload: enyo.bubbler}
-                       }
-                   ]},
+                  {name: 'iframe', fit: true, tag: 'iframe',
+                   src: '',
+                   classes: 'wide',
+                   attributes: {onload: enyo.bubbler}
+                  },
                   {kind: 'FittableColumns', name: 'viewSourceToolbar',
                    noStretch: true, classes: 'onyx-toolbar footer-toolbar',
                    components: [

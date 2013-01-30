@@ -25,9 +25,9 @@
 }
 
 .wide {
-	min-width:99%;
+	min-width:100%;
 }
 
 .tall {
-	min-height:99%;
+	min-height:100%;
 }
