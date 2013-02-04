@@ -17,26 +17,54 @@ limitations under the License.
 "use strict";
 var caf = require('caf_core');
 
+var getDevicesState = function(self) {
+    var all = {};
+    var deviceIds = self.$.iot.listDevices();
+    deviceIds.forEach(function(x) {                              
+                          var map = self.$.iot.getIoT(x);
+                          var result = {};
+                          var keys =  Object.keys(map.toCloud);
+                          console.log(JSON.stringify(keys));
+                          keys.forEach(function(key) {
+                                           result[key] = map.toCloud[key];
+                                       });
+                          all[x] = result;
+                      });
+    return all;
+};
+
 exports.methods = {
     '__ca_init__' : function(cb) {
         this.state.counter = -1;
         cb(null);
     },
     '__ca_pulse__' : function(cb) {
+        var self = this;
         this.state.counter = this.state.counter + 1;
+        var deviceIds = this.$.iot.listDevices();
+        deviceIds.forEach(function(x) {
+                              var map = self.$.iot.getIoT(x);
+                              map.fromCloud.counter = self.state.counter; 
+                          }); 
         if (this.state.counter % 5 == 0) {
-            this.$.session.notify([this.state.counter], 'default');
+            this.$.session.notify([this.state.counter,
+                                   getDevicesState(this)], 'default');
         }
         cb(null);
     },
-    'addGadget' : function(gadgetId, cb) {
-
-        this.state.counter = this.state.counter + inc;
-        if (this.state.counter % 5 == 0) {
-            this.$.session.notify([this.state.counter], 'default');
-        }
-        cb(null, {'name' : name, 'inc' : inc,
-                  'counter' : this.state.counter });
+    'addGadget' : function(gadgetId, cb) {        
+        this.$.iot.addIoT(gadgetId);
+        cb(null, "ok");
+    },
+    'doCommand': function(gadgetId, command, cb) {
+        this.$.iot.addCommand(gadgetId, command);
+        cb(null, "ok");
+    },
+    'listGadgets': function(cb) {
+        cb(null,  this.$.iot.listDevices());
+    },
+    'getSensorData': function(cb) {
+        cb(null, {gadgets: getDevicesState(this)});
     }
 };
 
