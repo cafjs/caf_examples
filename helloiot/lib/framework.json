@@ -5,7 +5,7 @@
     "env": {
         "timeout": 10,
         "interval": 5,
-        "debugger": true
+        "debugger": false
     },
     "plugs": [
         {
@@ -89,7 +89,7 @@
             "name": "iot_mux",
             "description": "Interacts with a backend service to store IoT maps",
             "env": {
-            
+
             }
         },
         {

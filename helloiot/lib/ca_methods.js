@@ -20,7 +20,7 @@ var caf = require('caf_core');
 var getDevicesState = function(self) {
     var all = {};
     var deviceIds = self.$.iot.listDevices();
-    deviceIds.forEach(function(x) {                              
+    deviceIds.forEach(function(x) {
                           var map = self.$.iot.getIoT(x);
                           var result = {};
                           var keys =  Object.keys(map.toCloud);
@@ -44,15 +44,15 @@ exports.methods = {
         var deviceIds = this.$.iot.listDevices();
         deviceIds.forEach(function(x) {
                               var map = self.$.iot.getIoT(x);
-                              map.fromCloud.counter = self.state.counter; 
-                          }); 
-        if (this.state.counter % 5 == 0) {
+                              map.fromCloud.counter = self.state.counter;
+                          });
+//        if (this.state.counter % 5 == 0) {
             this.$.session.notify([this.state.counter,
                                    getDevicesState(this)], 'default');
-        }
+//        }
         cb(null);
     },
-    'addGadget' : function(gadgetId, cb) {        
+    'addGadget' : function(gadgetId, cb) {
         this.$.iot.addIoT(gadgetId);
         cb(null, "ok");
     },

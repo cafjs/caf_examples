@@ -9,23 +9,19 @@ enyo.kind({
                   sensorData: ''
               },
               events: {
-                  onCommand: ""
+                  onLock: ""
               },
               components: [
+                  {kind: 'GadgetPopup', name: 'gadgetPopup'},
                   {tag: 'b', name: 'gadgetTag'},
-                  {tag: 'span', name: 'sensorTag'},            
-                  {kind: 'onyx.InputDecorator',
-                   components: [
-                       {kind: 'onyx.Input', name: 'commandTag',
-                        placeholder: 'Command'},
-                       {kind: 'onyx.Button', name: 'commandButton',
-                        content: 'Do it!', ontap: 'newCommand'}
-                   ]
-                  }
+                  {tag: 'span', name: 'sensorTag'},
+                  {kind: 'onyx.Button', name: 'commandButton',
+                        content: 'New Command', ontap: 'newCommand'}
+
               ],
               newCommand: function(inSource, inEvent) {
-                  this.doCommand({gadgetId: this.gadgetId, 
-                                  command: this.$.commandTag.getValue()});
+                  this.$.gadgetPopup.deploy(this.gadgetId);
+                  this.doLock();
                   return true;
               },
               gadgetIdChanged: function() {
@@ -45,10 +41,12 @@ enyo.kind({
                   gadgets: {}
               },
               keys: [],
+              lockRefresh: false,
               components: [
                   {kind: 'Repeater', name: 'list', count: 0, onSetupItem: 'setupItem',
                    components: [
-                       {kind: 'GadgetItem', name: 'oneGadget' }
+                       {kind: 'GadgetItem', name: 'oneGadget', onLock: 'lock',
+                        onCommand: 'unlock'}
                    ]}
 
               ],
@@ -60,6 +58,9 @@ enyo.kind({
                   this.gadgetsChanged();
               },
               gadgetsChanged: function(inOldGadgets) {
+                  if (this.lockRefresh) {
+                      return true;
+                  }
                   // Object.keys not supported in IE8
                   var getKeys = Object.keys || function(obj) {
                       var result = [];
@@ -74,6 +75,15 @@ enyo.kind({
                   this.$.list.setCount(this.keys.length);
                   this.$.list.build();
                   this.render();
+                  return true;
+              },
+              lock: function() {
+                  this.lockRefresh = true;
+                  return true;
+              },
+              unlock: function() {
+                  this.lockRefresh = false;
+                  // propagate onCommand
               },
               setupItem: function(inSender, rowHandle) {
                   var key = this.keys[rowHandle.index];
@@ -81,5 +91,39 @@ enyo.kind({
                   var oneGadget = rowHandle.item.$.oneGadget;
                   oneGadget.setGadgetId(key);
                   oneGadget.setSensorData(sensorData);
+                  return true;
+              }
+          });
+
+enyo.kind({
+              name: 'GadgetPopup',
+              kind: 'onyx.Popup',
+              centered: true,
+              modal: true,
+              floating: true,
+              events: {
+                  onCommand: ""
+              },
+              gadgetId: "",
+              components: [
+                  {kind: 'onyx.InputDecorator',
+                   components: [
+                      {tag: 'b', name: 'gadgetIdTag'},
+                       {kind: 'onyx.Input', name: 'command',
+                        placeholder: ' Command '},
+                        {kind: 'onyx.Button', name: 'commandOK',
+                         content: 'OK', ontap: 'okCommand'}
+                   ]}
+              ],
+              okCommand: function() {
+                  this.doCommand({gadgetId: this.gadgetId,
+                                  command: this.$.command.getValue()});
+                  this.hide();
+                  return true;
+              },
+              deploy: function(gadgetId) {
+                  this.gadgetId = gadgetId;
+                  this.$.gadgetIdTag.setContent(this.gadgetId + ': ');
+                  this.show();
               }
           });
