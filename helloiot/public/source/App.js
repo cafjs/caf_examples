@@ -16,21 +16,10 @@ enyo.kind({
                        {kind: 'onyx.InputDecorator',
                         components: [
                             {kind: 'onyx.Input', name: 'deviceName',
-                             style: 'width: 90%;',
+                             style: 'width: 70%;',
                              placeholder: ' A unique id for your device'},
                             {kind: 'onyx.Button', name: 'myButton',
                              content: 'Add Device', ontap: 'addDevice'}
-                        ]}
-                   ]},
-                  {tag: 'br'},
-                  {kind: 'onyx.Groupbox',
-                   components: [
-                       {kind: 'onyx.GroupboxHeader',
-                        content: 'Last Notification from Cloud Assistant'},
-                       {kind: 'onyx.InputDecorator',
-                        components: [
-                            {kind: 'onyx.Input', name: 'notification',
-                             style: 'width: 100%', value: ''}
                         ]}
                    ]},
                   {tag: 'br'},
@@ -91,8 +80,6 @@ enyo.kind({
               },
               newNotif: function(inSource, inEvent) {
                   var counter = inEvent[0];
-                  this.$.notification.setValue(' got counter ' +
-                                               counter);
                   this.$.gadgetsList.setGadgets(inEvent[1]);
                   console.log(' got counter ' + counter);
                   return true;

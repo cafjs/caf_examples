@@ -17,6 +17,8 @@ limitations under the License.
 "use strict";
 var caf = require('caf_core');
 
+var MAX_NUM_NOTIF = 2;
+
 var getDevicesState = function(self) {
     var all = {};
     var deviceIds = self.$.iot.listDevices();
@@ -46,10 +48,9 @@ exports.methods = {
                               var map = self.$.iot.getIoT(x);
                               map.fromCloud.counter = self.state.counter;
                           });
-//        if (this.state.counter % 5 == 0) {
-            this.$.session.notify([this.state.counter,
-                                   getDevicesState(this)], 'default');
-//        }
+        this.$.session.boundQueue(MAX_NUM_NOTIF, 'default');
+        this.$.session.notify([this.state.counter,
+                               getDevicesState(this)], 'default');
         cb(null);
     },
     'addGadget' : function(gadgetId, cb) {

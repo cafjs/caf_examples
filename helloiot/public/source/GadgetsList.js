@@ -9,19 +9,74 @@ enyo.kind({
                   sensorData: ''
               },
               events: {
-                  onLock: ""
+                  onLock: "",
+                  onCommand: "" // also bubbled from popup 
               },
               components: [
                   {kind: 'GadgetPopup', name: 'gadgetPopup'},
                   {tag: 'b', name: 'gadgetTag'},
                   {tag: 'span', name: 'sensorTag'},
+                  {kind: "onyx.Groupbox", components: [
+                       {kind: "onyx.GroupboxHeader",
+                        content: "Inputs |7|6|5|4|3|2|1|0|"},
+                       {kind: enyo.Control, components: [
+                            {kind:"onyx.Checkbox", name: "input7", 
+                             disabled: true},
+                            {kind:"onyx.Checkbox", name: "input6",
+                             disabled: true},
+                            {kind:"onyx.Checkbox", name: "input5",
+                             disabled: true},
+                            {kind:"onyx.Checkbox", name: "input4",
+                             disabled: true},
+                            {kind:"onyx.Checkbox", name: "input3",
+                             disabled: true},
+                            {kind:"onyx.Checkbox", name: "input2",
+                             disabled: true},
+                            {kind:"onyx.Checkbox", name: "input1",
+                             disabled: true},
+                            {kind:"onyx.Checkbox", name: "input0",
+                             disabled: true}
+                        ]}
+                   ]},
+                  {kind: "onyx.Groupbox", components: [
+                       {kind: "onyx.GroupboxHeader",
+                        content: "Outputs |7|6|5|4|3|2|1|0|"},
+                       {kind: enyo.Control, components: [
+                            {kind:"onyx.Checkbox", name: "output7",
+                             onchange:"checkboxChanged"},
+                            {kind:"onyx.Checkbox", name: "output6",
+                             onchange:"checkboxChanged"},
+                            {kind:"onyx.Checkbox", name: "output5",
+                             onchange:"checkboxChanged"},
+                            {kind:"onyx.Checkbox", name: "output4",
+                             onchange:"checkboxChanged"},
+                            {kind:"onyx.Checkbox", name: "output3",
+                             onchange:"checkboxChanged"},
+                            {kind:"onyx.Checkbox", name: "output2",
+                             onchange:"checkboxChanged"},
+                            {kind:"onyx.Checkbox", name: "output1",
+                             onchange:"checkboxChanged"},
+                            {kind:"onyx.Checkbox", name: "output0",
+                             onchange:"checkboxChanged"}
+                        ]}
+                   ]},
                   {kind: 'onyx.Button', name: 'commandButton',
                         content: 'New Command', ontap: 'newCommand'}
-
               ],
               newCommand: function(inSource, inEvent) {
                   this.$.gadgetPopup.deploy(this.gadgetId);
                   this.doLock();
+                  return true;
+              },
+              checkboxChanged: function(inSource, inEvent) {
+                  this.doLock();
+                  var index = parseInt(inSource.getName()
+                      .charAt(inSource.getName().length -1));
+                  var commandStr = '{"op": ' +  
+                      (inSource.getValue() ? '"on"' : '"off"') + 
+                      ', "pin": ' + index + '}';
+                  this.doCommand({gadgetId: this.gadgetId,
+                                  command: commandStr});                 
                   return true;
               },
               gadgetIdChanged: function() {
@@ -30,7 +85,28 @@ enyo.kind({
               },
               sensorDataChanged: function() {
                   this.$.sensorTag.setContent(JSON.stringify(this.sensorData));
+                  this.setInputs(this.sensorData.inputs);
+                  this.setOutputs(this.sensorData.outputs);
                   return true;
+              },
+              setInputs: function(inputs) {
+                  this.setCheckboxes(inputs, 'input');
+              },
+              setOutputs: function(outputs) {
+                  this.setCheckboxes(outputs, 'output');
+              },
+              setCheckboxes: function(data, label) {
+                  if ((typeof data === 'number') && (data >= 0) && 
+                      (data <= 255)) {
+                      var mask = 1;
+                      for (var i = 0; i < 8; i++) {
+                          var target = label + i;
+                          this.$[target].setChecked(mask & data);
+                          mask = mask << 1;
+                      }
+                  } else {
+                      console.log('Ignoring bad ' +  label + ':' + data);
+                  }
               }
           });
 
