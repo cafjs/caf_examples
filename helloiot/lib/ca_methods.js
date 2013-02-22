@@ -19,17 +19,23 @@ var caf = require('caf_core');
 
 var MAX_NUM_NOTIF = 2;
 
+var clone = function(map) {
+    var result = {};
+    for (var key in map) {
+        result[key] = map[key];
+    }
+    return result;
+};
+
 var getDevicesState = function(self) {
     var all = {};
     var deviceIds = self.$.iot.listDevices();
     deviceIds.forEach(function(x) {
                           var map = self.$.iot.getIoT(x);
-                          var result = {};
-                          var keys =  Object.keys(map.toCloud);
-                          console.log(JSON.stringify(keys));
-                          keys.forEach(function(key) {
-                                           result[key] = map.toCloud[key];
-                                       });
+                          var result = 
+                              {toCloud: clone(map.toCloud),
+                               fromCloud: clone(map.fromCloud)};
+                          console.log(JSON.stringify(result));
                           all[x] = result;
                       });
     return all;
@@ -55,6 +61,14 @@ exports.methods = {
     },
     'addGadget' : function(gadgetId, cb) {
         this.$.iot.addIoT(gadgetId);
+        cb(null, "ok");
+    },
+    'changeOutput' : function(gadgetId, pin, isOn, cb) {
+        var map = this.$.iot.getIoT(gadgetId);
+        var outputs = map.fromCloud.outputs || 0;
+        outputs = (isOn ? outputs | (1 << pin) :
+                   outputs & (~(1 << pin)));
+        map.fromCloud.outputs = outputs;
         cb(null, "ok");
     },
     'doCommand': function(gadgetId, command, cb) {

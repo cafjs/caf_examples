@@ -26,7 +26,7 @@ enyo.kind({
                   {kind: 'onyx.Toolbar', content: 'Gadgets'},
                   {fit: true, kind: 'Scroller', components: [
                        {kind: 'GadgetsList', name: 'gadgetsList',
-                        onCommand: 'newCommand'}
+                        onCommand: 'newCommand', onOutputChange: 'newOutput'}
                    ]}
               ],
               newSession: function(inSource, inEvent) {
@@ -47,6 +47,21 @@ enyo.kind({
                   this.mySession && this.mySession
                       .remoteInvoke('doCommand', [deviceId, command], cbOK, 
                                     cbError);                  
+                  return true;
+              },
+              newOutput: function(inSource, inEvent) {
+                  var cbOK = function(msg) {
+                      console.log(JSON.stringify(msg));
+                  };
+                  var cbError = function(error) {
+                      console.log('ERROR:' + JSON.stringify(error));
+                  };
+                  var deviceId = inEvent.gadgetId;
+                  var pin = inEvent.pin;
+                  var isOn = inEvent.isOn;
+                  this.mySession && this.mySession
+                      .remoteInvoke('changeOutput', [deviceId, pin, isOn],
+                                    cbOK, cbError);                  
                   return true;
               },
               loadGadgetsState: function() {

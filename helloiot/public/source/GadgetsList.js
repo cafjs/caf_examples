@@ -10,7 +10,7 @@ enyo.kind({
               },
               events: {
                   onLock: "",
-                  onCommand: "" // also bubbled from popup 
+                  onOutputChange: ""
               },
               components: [
                   {kind: 'GadgetPopup', name: 'gadgetPopup'},
@@ -72,11 +72,9 @@ enyo.kind({
                   this.doLock();
                   var index = parseInt(inSource.getName()
                       .charAt(inSource.getName().length -1));
-                  var commandStr = '{"op": ' +  
-                      (inSource.getValue() ? '"on"' : '"off"') + 
-                      ', "pin": ' + index + '}';
-                  this.doCommand({gadgetId: this.gadgetId,
-                                  command: commandStr});                 
+                  this.doOutputChange({gadgetId: this.gadgetId,
+                                       pin: index,
+                                       isOn: inSource.getValue()});
                   return true;
               },
               gadgetIdChanged: function() {
@@ -85,8 +83,13 @@ enyo.kind({
               },
               sensorDataChanged: function() {
                   this.$.sensorTag.setContent(JSON.stringify(this.sensorData));
-                  this.setInputs(this.sensorData.inputs);
-                  this.setOutputs(this.sensorData.outputs);
+                  var toCloud = (this.sensorData && this.sensorData.toCloud) 
+                      || {};
+                  var fromCloud = (this.sensorData && this.sensorData.fromCloud)
+                      || {};
+                  this.setInputs(toCloud.inputs);
+                  this.setOutputs(fromCloud.outputs);
+                  this.setPending(fromCloud.outputs ^ toCloud.outputs);
                   return true;
               },
               setInputs: function(inputs) {
@@ -95,13 +98,23 @@ enyo.kind({
               setOutputs: function(outputs) {
                   this.setCheckboxes(outputs, 'output');
               },
-              setCheckboxes: function(data, label) {
+              setPending: function(pending) {
+                  this.setCheckboxes(pending, 'output', 'yellow');
+              },
+              setCheckboxes: function(data, label, color) {
                   if ((typeof data === 'number') && (data >= 0) && 
                       (data <= 255)) {
                       var mask = 1;
                       for (var i = 0; i < 8; i++) {
                           var target = label + i;
-                          this.$[target].setChecked(mask & data);
+                          if (color) {
+                              if (mask & data) {
+                                  this.$[target].applyStyle("background-color",
+                                                            color);
+                              }
+                          } else {
+                              this.$[target].setChecked(mask & data);
+                          }
                           mask = mask << 1;
                       }
                   } else {
@@ -119,16 +132,17 @@ enyo.kind({
               keys: [],
               lockRefresh: false,
               components: [
-                  {kind: 'Repeater', name: 'list', count: 0, onSetupItem: 'setupItem',
+                  {kind: 'Repeater', name: 'list', count: 0, 
+                   onSetupItem: 'setupItem',
                    components: [
                        {kind: 'GadgetItem', name: 'oneGadget', onLock: 'lock',
-                        onCommand: 'unlock'}
+                        onCommand: 'unlock', onOutputChange: 'unlock'}
                    ]}
 
               ],
               addGadget: function(name, sensorData) {
                   if (!sensorData) {
-                      sensorData = 'unknown';
+                      sensorData = {};
                   }
                   this.gadgets[name] = sensorData;
                   this.gadgetsChanged();
