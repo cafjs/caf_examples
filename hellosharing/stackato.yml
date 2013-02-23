@@ -1,0 +1,15 @@
+name: hellosharing
+
+framework:
+  type: node
+  runtime: node08
+
+services:
+  ${name}-redis: redis
+
+mem: 64M
+
+instance: 1
+
+processes:
+  web: node --harmony-proxies index.js
