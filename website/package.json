@@ -1,14 +1,12 @@
 {
-  "name": "caf_website",
-  "description": "Cloud Assistants website",
-  "version": "0.0.1",
-  "author": "Antonio Lain <antlai@cafjs.com>",
-  "dependencies": {
-      "caf_core" : ">= 0.0.1",
-      "caf_security" : ">= 0.0.1",
-      "caf_session" : ">= 0.0.1",
-      "caf_profiler" : ">= 0.0.1"
-  },
-  "main": "index",
-  "engines": { "node": ">= 0.4.1 " }
+    "name": "caf_examples",
+    "description": "Cloud Assistant Framework Examples",
+    "version": "0.0.5",
+    "author": "Antonio Lain <antlai@cafjs.com>",
+    "homepage": "http://www.cafjs.com",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cafjs/caf_examples.git"
+    },
+    "engines": { "node": ">= 0.8.1 " }
 }
