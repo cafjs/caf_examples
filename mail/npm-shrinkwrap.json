@@ -36,7 +36,7 @@
       }
     },
     "async": {
-      "version": "0.1.22"
+      "version": "0.2.5"
     },
     "imap": {
       "version": "0.7.7",
