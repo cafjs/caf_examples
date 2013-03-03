@@ -58,7 +58,7 @@ enyo.kind({
                    ]}
               ],
               newSession: function(inSource, inEvent) {
-                  this.$.appsList.setAppRootName(inEvent.caOwner + '_' +
+                  this.$.appsList.setAppRootName(inEvent.caOwner + '-' +
                                                  inEvent.caLocalName);
                   this.mySession = inEvent.session;
                   this.$.addAppButton.setDisabled(false);

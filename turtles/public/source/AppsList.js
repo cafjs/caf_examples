@@ -31,7 +31,7 @@ enyo.kind({
               ],
               appItemChanged: function() {
                   this.$.nameTag.setContent('App Name: ' +
-                                            this.appItem.appRootName + '_' +
+                                            this.appItem.appRootName + '-' +
                                             this.appItem.name);
                   this.$.hashTag.setContent('SHA1 Hash: ' +
                                             this.appItem.hash || 'unknown');
