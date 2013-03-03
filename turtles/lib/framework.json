@@ -5,7 +5,7 @@
     "env": {
         "timeout": 10,
         "interval": 5,
-        "debugger": true
+        "debugger": false
     },
     "plugs": [
         {
@@ -13,7 +13,7 @@
             "name": "log",
             "description": "Logging of errors and debugging info\n Properties: <logLevel> Threshold for logging: OFF, FATAL, ERROR, WARN, INFO, DEBUG and TRACE (in that order).",
             "env": {
-                "logLevel" : "TRACE"
+                "logLevel" : "DEBUG"
             }
         },
         {
@@ -120,7 +120,7 @@
             "env": {
                 "target" : "http://api.cafjs.com",
                 "user" : "foo@bar.com",
-                "password" : "Nj3dUg7N5V",
+                "password" : "cfpassword",
                 "memory" : 64,
                 "instances": 1,
                 "services" :["redis"]
