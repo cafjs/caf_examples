@@ -1,7 +1,7 @@
 {
     "name": "caf_examples",
     "description": "Cloud Assistant Framework Examples",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "author": "Antonio Lain <antlai@cafjs.com>",
     "homepage": "http://www.cafjs.com",
     "repository": {
