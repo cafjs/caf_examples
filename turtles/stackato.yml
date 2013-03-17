@@ -9,7 +9,7 @@ services:
 
 mem: 64M
 
-instance: 1
+instances: 1
 
 processes:
   web: node --harmony-proxies index.js

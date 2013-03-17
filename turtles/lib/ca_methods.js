@@ -81,8 +81,9 @@ exports.methods = {
 
     //handler methods
     'updatedFile' : function(alias, fileName, version, cb) {
-        console.log('Got updated file notification: alias:' + alias +
-                    ' fileName:' + fileName + ' version:' + version);
+        this.$.log && this.$.log.trace('Got updated file notification: alias:' 
+                                       + alias + ' fileName:' + fileName
+                                       + ' version:' + version);
         var appInfo = this.state.apps[alias];
         if (!appInfo) {
             console.log('Ignoring unknown app ' + alias);
@@ -111,8 +112,8 @@ exports.methods = {
     },
     'updatedDeployedApps': function(cb) {
         var appsInfo = this.$.deploy.getAppsInfo();
-        console.log('Got deployed app notification:' +
-                   JSON.stringify(appsInfo));
+        this.$.log && this.$.log.trace('Got deployed app notification:' +
+                                       JSON.stringify(appsInfo));
         var changed = false;
         for (var appName in appsInfo) {
             var appInfo = this.state.apps[appName];
@@ -156,11 +157,14 @@ exports.methods = {
             this.state.apps[appItem.name].confirmed = true;
             this.$.deploy.deployApp(appItem.name,
                                     this.state.apps[appItem.name].fileName);
-            console.log('deploying app' + JSON.stringify(appItem));
+            this.$.log && this.$.log.trace("ca_methods:deployApp: " 
+                                           + JSON.stringify(appItem));
             cb(null, 'ok');
         }
     },
     'listApps' : function(cb) {
+        this.$.log && this.$.log.trace("ca_methods:listApps " +
+                                       JSON.stringify(this.state.apps));
         cb(null, {apps: this.state.apps, autoOn: this.state.autoOn});
     },
     'forceRefresh' : function(cb) {

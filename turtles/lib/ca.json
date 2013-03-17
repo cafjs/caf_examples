@@ -50,7 +50,14 @@
 
     ],
     "proxies" : [
+       {
+            "module": "proxy_log",
+            "name": "log",
+            "description": "Allows access to the system log",
+            "env" : {
 
+            }
+        },
         {
             "module": "proxy_inqueue",
             "name": "inq",

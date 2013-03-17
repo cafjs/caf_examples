@@ -13,7 +13,7 @@
             "name": "log",
             "description": "Logging of errors and debugging info\n Properties: <logLevel> Threshold for logging: OFF, FATAL, ERROR, WARN, INFO, DEBUG and TRACE (in that order).",
             "env": {
-                "logLevel" : "DEBUG"
+                "logLevel" : "TRACE"
             }
         },
         {
