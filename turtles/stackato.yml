@@ -7,7 +7,7 @@ framework:
 services:
   ${name}-redis: redis
 
-mem: 64M
+mem: 1G
 
 instances: 1
 
