@@ -1,0 +1,158 @@
+{
+    "module": "sup_main",
+    "name": "sup",
+    "description": "Top level Supervisor component\n Properties:\n <timeout> Max seconds to init or shutdown.\n <interval> Default cron sleep time in seconds between actions. <debugger> true if it starts in debugging mode",
+    "env": {
+        "timeout": 10,
+        "interval": 5,
+        "debugger": true
+    },
+    "plugs": [
+        {
+            "module": "plug_log",
+            "name": "log",
+            "description": "Logging of errors and debugging info\n Properties: <logLevel> Threshold for logging: OFF, FATAL, ERROR, WARN, INFO, DEBUG and TRACE (in that order).",
+            "env": {
+                "logLevel" : "DEBUG"
+            }
+        },
+        {
+            "module": "plug_cloudfoundry",
+            "name": "cf",
+            "description": "Enables access to config properties provided by Cloud Foundry",
+            "env": {
+                "redis" : {
+                    "port" : 6379,
+                    "hostname" : "localhost",
+                    "password" : "pleasechange"
+                }
+            }
+        },
+        {
+            "module": "plug_checkpoint_lua",
+            "name": "cp",
+            "description": "Connector to checkpointing service\n Properties: <coalescing> An object containing <interval> in seconds and <maxPendingUpdates> that defines how to aggregate updates in a single Lua script\n",
+            "env": {
+                "coalescing" : {
+                    "interval" : 0.01,
+                    "maxPendingUpdates" : 10
+                }
+            }
+        },
+        {
+            "module": "plug_lease",
+            "name": "lease",
+            "description": "Connector for lease renewal service\n Properties: <leaseTimeout> Time for a lease to expire in sec:\n",
+            "env": {
+                "leaseTimeout" : 10
+                }
+        },
+        {
+            "module": "plug_lookup",
+            "name": "lookup",
+            "description": "Connector for directory service",
+            "env": {
+
+
+                }
+        },
+        {
+            "module": "plug_factory",
+            "name": "fact",
+            "description": "Connector for CA factory\n Properties: <ca.json> file name for CA spec.:\n <ca_methods.js> A file name containing the implementation of the custom methods for this CA (i.e., in exports.methods).\n ",
+            "env": {
+                "ca.json" : "ca.json",
+                "ca_methods.js" : "ca_methods.js",
+                "ca_default_methods.js" : "ca_default_methods.js"
+
+
+                }
+        },
+        {
+            "module": "plug_uniquifier",
+            "name": "uniquifier",
+            "description": "Connector for protocol handler that guarantees no duplicated CAs\n Properties: <nodeId> Node identifier for this process (mainly for debugging):\n",
+            "env": {
+
+                }
+        },
+        {
+            "module": "plug_dispatcher",
+            "name": "dispatcher",
+            "description": "Dispatches  request to the target CA \n Properties: \n",
+            "env": {
+
+            }
+        },
+        {
+            "module": "caf_security/plug",
+            "name": "security_mux",
+            "description": "Authenticates requests\n Properties: <strategy> Name for the authentication mechanism \n <tokenKey> Secret to sign tokens \n <tokenExpires> Validity in seconds of a token\n <users> username/hashed passwords for valid users\n",
+            "env": {
+                "strategy" : {
+                    "local":  {
+                        "tokenExpires" : 50000,
+                        "tokenKey" : "pleasechange",
+                        "users" : {
+                            "antonio" : "sha1$c414d4b2$1$9920e4c8d3d8a7f1db37867e55240e2dfa482c26",
+                            "john" :"sha1$3f1d4cdf$1$a33427e0ebb54df43e365d6effc55c1683f142e6"
+                        }
+                    },
+                    "accounts": {
+                        "serviceName" : "accounts",
+                        "serviceUrl" : "http://accounts.cafjs.com/app.html",
+                        "pubFile" : "rsa_pub.pem",
+                        "unrestricted" : false
+                    }
+                }
+            }
+        }
+    ],
+    "crons": [
+        {
+            "module": "cron_lease",
+            "name": "cronLease",
+            "description": "Cron job for renewing leases for CAs",
+            "env": {
+                "interval" : 5
+            }
+        },
+        {
+            "module": "cron_ripper",
+            "name": "ripper",
+            "description": "Cron job for getting rid of deadlocked CAs",
+            "env": {
+
+
+            }
+        },
+        {
+            "module": "cron_pulser",
+            "name": "pulser",
+            "description": "Cron job for enabling autonomous computation of CAs",
+            "env": {
+
+
+            }
+        },
+        {
+            "module": "cron_security",
+            "name": "security_pulser",
+            "description": "Cron job for performing regular security maintenance",
+            "env": {
+                "interval": 10
+            }
+        }
+    ],
+
+    "pipe": {
+        "module": "pipe_main",
+        "name": "pipe",
+        "description": "Pipeline based on Connect to process requests",
+        "env": {
+            "relPublicPath" : "../../../public"
+
+        }
+    }
+
+}
