@@ -23,27 +23,13 @@ exports.methods = {
         cb(null);
     },
     'inference' : function(query, cb) {
-        async.series([
-                         function(cb0) {
-                             this.$.jsonrpc.invoke('cog', 'inference',
-                                                   [query], cb0);
-                         }
-                     ], cb);
+        this.$.jsonrpc.invoke('cog', 'inference', [query], cb);
     },
-    'train' : function(query, result, cb) {
-        async.series([
-                         function(cb0) {
-                             this.$.jsonrpc.invoke('cog', 'train',
-                                                   [query, result], cb0);
-                         }
-                     ], cb);
+    'learn' : function(query, result, cb) {
+        this.$.jsonrpc.invoke('cog', 'learn', [query, result], cb);
     },
     'reset' : function(cb) {
-        async.series([
-                         function(cb0) {
-                             this.$.jsonrpc.invoke('cog', 'reset', [], cb0);
-                         }
-                     ], cb);
+        this.$.jsonrpc.invoke('cog', 'reset', [], cb);
     }
 };
 

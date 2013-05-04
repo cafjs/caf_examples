@@ -60,7 +60,7 @@
         {
             "module": "caf_jsonrpc/proxy",
             "name": "jsonrpc",
-            "description": "Invokes a method on a remote service using using a JSON-RPC transport",
+            "description": "Invokes a method on a remote service using using a JSON-RPC transport\n Properties: <proxy> A url for an http proxy.\n",
             "env" : {
                 "cog": {
                  "url": "http://cog1.dnsalias.com:9080/invoke"

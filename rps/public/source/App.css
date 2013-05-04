@@ -1,0 +1,17 @@
+.labeled-group {
+    padding-top:6px;
+}
+.labeled-group > * {
+    display:block;
+    width: auto;
+    padding-left: 35px;
+    line-height: 30px;
+    margin: 0 6px 6px 6px;
+}
+
+.rps-icon {
+    width: 30px; 
+    height: 30px; 
+    float: left; 
+    padding-right: 10px 
+}
