@@ -85,6 +85,14 @@
             }
         },
         {
+            "module": "caf_iot/plug",
+            "name": "iot_mux",
+            "description": "Interacts with a backend service to store IoT maps",
+            "env": {
+
+            }
+        },
+        {
             "module": "caf_security/plug",
             "name": "security_mux",
             "description": "Authenticates requests\n Properties: <strategy> Name for the authentication mechanism \n <tokenKey> Secret to sign tokens \n <tokenExpires> Validity in seconds of a token\n <users> username/hashed passwords for valid users\n",

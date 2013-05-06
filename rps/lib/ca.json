@@ -29,6 +29,13 @@
             "env" : {
 
             }
+        },
+        {
+            "module": "caf_iot/plug_ca",
+            "name": "iot_ca",
+            "description": "Manages IoT maps for this CA.",
+            "env" : {
+            }
         }
     ],
     "proxies" : [
@@ -65,6 +72,14 @@
                 "cog": {
                  "url": "http://cog1.dnsalias.com:9080/invoke"
                 }
+            }
+        },
+        {
+            "module": "caf_iot/proxy",
+            "name": "iot",
+            "description": "Enables simple interactions between a CA and a gadget of the IoT\n Properties:<deviceId> A default UUID for the device. (testing)",
+            "env" : {
+                 "deviceId" :"233232323"                 
             }
         }
     ],
