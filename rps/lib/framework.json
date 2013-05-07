@@ -4,7 +4,7 @@
     "description": "Top level Supervisor component\n Properties:\n <timeout> Max seconds to init or shutdown.\n <interval> Default cron sleep time in seconds between actions. <debugger> true if it starts in debugging mode",
     "env": {
         "timeout": 10,
-        "interval": 5,
+        "interval": 1,
         "debugger": true
     },
     "plugs": [

@@ -119,7 +119,7 @@
               "version": "0.13.1",
               "dependencies": {
                 "hoek": {
-                  "version": "0.8.5"
+                  "version": "0.8.4"
                 },
                 "boom": {
                   "version": "0.4.1"

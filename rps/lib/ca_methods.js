@@ -33,13 +33,36 @@ var getDevicesState = function(self) {
     var deviceIds = self.$.iot.listDevices();
     deviceIds.forEach(function(x) {
                           var map = self.$.iot.getIoT(x);
-                          var result = 
+                          var result =
                               {toCloud: clone(map.toCloud),
                                fromCloud: clone(map.fromCloud)};
 //                          console.log(JSON.stringify(result));
                           all[x] = result;
                       });
     return all;
+};
+
+var NUM_PIN_INPUT = 3;
+var inputFromPin = function(pins) {
+    for (var i =0; i< NUM_PIN_INPUT ; i++) {
+        if ((1<< i) & pins) {
+            // lower non-zero pin wins
+            return i;
+        }
+    }
+    return -1;
+};
+
+var PIN_OUTPUT_SHIFT = 5;
+var pinFromOutput = function(newOut, lastPin) {
+    lastPin = lastPin || 0;
+    var mask = (1 <<  PIN_OUTPUT_SHIFT) -1;
+    if (newOut < 0) {
+        return (lastPin & mask);
+    } else {
+        // leave lower pins untouched, output pins are 7,6 and 5
+        return ((1 << (newOut +  PIN_OUTPUT_SHIFT)) | (lastPin & mask));
+    }
 };
 
 exports.methods = {
@@ -51,14 +74,36 @@ exports.methods = {
         var self = this;
         this.state.counter = this.state.counter + 1;
         var deviceIds = this.$.iot.listDevices();
-        deviceIds.forEach(function(x) {
-                              var map = self.$.iot.getIoT(x);
-                              map.fromCloud.counter = self.state.counter;
-                          });
-        this.$.session.boundQueue(MAX_NUM_NOTIF, 'default');
-        this.$.session.notify([this.state.counter,
-                               getDevicesState(this)], 'default');
-        cb(null);
+        async.forEach(deviceIds, function(x, cb0) {
+                       var map = self.$.iot.getIoT(x);
+                       var cb1 = function (err, newOut) {
+                           if (err) {
+                               cb0(err);
+                           } else {
+                               map.fromCloud.counter = self.state.counter;
+                               map.fromCloud.outputs =
+                                   pinFromOutput(newOut, map.fromCloud.outputs);
+                               cb0(null);
+                           }
+                       };
+                       var input = inputFromPin(map.toCloud.inputs);
+                       if (input >= 0) {
+                           self.inference(input, cb1);
+                       } else {
+                           cb1(null, input);
+                       }
+                   }, function (err) {
+                       if (err) {
+                           console.log("Got error " + JSON.stringify(err));
+                           cb(err);
+                       } else {
+                           self.$.session.boundQueue(MAX_NUM_NOTIF, 'default');
+                           self.$.session.notify([self.state.counter,
+                                                  getDevicesState(self)],
+                                                 'default');
+                           cb(null);
+                       }
+                   });
     },
     'inference' : function(query, cb) {
         this.$.jsonrpc.invoke('cog', 'inference', [query], cb);
