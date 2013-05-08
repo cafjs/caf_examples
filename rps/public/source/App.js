@@ -56,7 +56,7 @@ enyo.kind({
               name: 'App',
               classes: 'onyx',
               kind: 'FittableRows',
-              classes: "enyo-fit",
+              classes: "onyx enyo-fit",
               caOwner: '',
               mySession: null,
               icons: ["images/rock.png","images/paper.png",
@@ -95,7 +95,7 @@ enyo.kind({
                              components: [
                                  {kind: 'onyx.Button', name: 'myButton',
                                   content: 'Add Device', ontap: 'addDevice'},
-                                 {kind: 'onyx.Input', fit:true, 
+                                 {kind: 'onyx.Input', fit:true,
                                   name: 'deviceName',
                                   style: 'margin: 6px;',
                                   placeholder: ' A unique id for your device'}
@@ -179,7 +179,7 @@ enyo.kind({
                   var isOn = inEvent.isOn;
                   this.mySession && this.mySession
                       .remoteInvoke('changeOutput', [deviceId, pin, isOn],
-                                    cbOK, cbError);                  
+                                    cbOK, cbError);
                   return true;
               },
               addDevice: function(inSource, inEvent) {
@@ -236,7 +236,7 @@ enyo.kind({
                           {kind: 'onyx.Groupbox', components: [
                                {kind: 'onyx.GroupboxHeader',
                                 content: 'Select correct one'},
-                               {kind: 'RPSGroup', name: 'rpsPopupGroup', 
+                               {kind: 'RPSGroup', name: 'rpsPopupGroup',
                                 onSelect: 'callT'}
                            ]}
                       ]}

@@ -337,7 +337,7 @@ enyo.kind({
                   {name: 'iframe', fit: true, tag: 'iframe',
                    src: '',
                    classes: 'wide',
-                   attributes: {onload: enyo.bubbler}
+                   attributes: {onload: enyo.bubbler, frameBorder: 0}
                   },
                   {kind: 'FittableColumns', name: 'viewSourceToolbar',
                    noStretch: true, classes: 'onyx-toolbar footer-toolbar',
