@@ -9,13 +9,14 @@ enyo.kind({
               name: 'RPSGroup',
               kind: 'onyx.InputDecorator',
               published: {
-                  selected: -1
+                  selected: -1,
+                  buttonLabel: "Submit"
               },
               events: {
                   onSelect: ''
               },
               components: [
-                  {kind: "Group",  classes: "labeled-group",
+                  {kind: "Group",  classes: "labeled-group", name: "group",
                    onActivate:"groupActivated", highlander: true,
                    components: [
 	               {kind:"onyx.Checkbox",
@@ -38,8 +39,27 @@ enyo.kind({
                        }
 		   ]},
                   {kind: 'onyx.Button', name: 'myButton',
-                   content: 'Submit', ontap: 'callSelect'}
+                   content: 'xxxxxx', ontap: 'callSelect'}
               ],
+              create: function() {
+                  this.inherited(arguments);
+                  this.$.myButton.setContent(this.buttonLabel);
+              },
+              buttonLabelChanged: function(inSender, inEvent) {
+                  this.$.myButton.setContent(this.buttonLabel);
+              },
+              selectOne: function(value) {
+                  var checkboxes = this.$.group.getControls();
+                  checkboxes.forEach(function(x) {
+                                        x.setChecked(0);
+                                     });
+                  checkboxes.forEach(function(x, index) {
+                                         if (index === value) {
+                                             x.setChecked(1);
+                                         }
+                                     });
+                  this.render();
+              },
               groupActivated: function(inSender, inEvent) {
 		  if (inEvent.originator.getActive()) {
 		      this.selected = inEvent.originator.indexInContainer();
@@ -63,29 +83,30 @@ enyo.kind({
                       "images/scissors.png" ],
               components: [
                   {kind: 'onyx.Toolbar', content: 'Rock Paper Scissors'},
-                  {tag: 'br'},
                   {kind: 'ca.LoginContext', name: 'login',
                    onSession: 'newSession', onNotification: 'newNotif'},
-                  {kind: 'LearnPopup', name: 'learnPopup',
+/*                  {kind: 'LearnPopup', name: 'learnPopup',
                    onLearned: 'learnedSelected'},
-                  {tag: 'br'},
-                  {kind: 'onyx.Groupbox', components: [
+*/                  {kind: 'onyx.Groupbox', components: [
                        {kind: 'onyx.GroupboxHeader',
                         content: 'Pick one!'},
                        {kind: 'RPSGroup', name: 'rpsGroup', onSelect: 'callCA'}
                    ]},
-                  {tag: 'br'},
                   {kind: 'onyx.Groupbox',
                    components: [
                        {kind: 'onyx.GroupboxHeader',
                         content: 'Response'},
+                       {kind: 'RPSGroup', name: 'rpsGroupResponse',
+                        buttonLabel: "Train", onSelect: 'learnedSelected'}
+/*
                        {kind: 'onyx.InputDecorator', components: [
                             {kind: "RPSIcon",   name: "iconresponse"},
                             {kind: 'onyx.Button', name: 'wrongButton',
-                             content: 'Bad Choice?', ontap: 'callLearn'}
+                             content: 'Need Training?', ontap: 'callLearn'}
                         ]}
+
+*/
                    ]},
-                  {tag: 'br'},
                   {kind: 'onyx.Groupbox',
                    components: [
                        {kind: 'onyx.GroupboxHeader',
@@ -93,39 +114,39 @@ enyo.kind({
                        {kind: 'onyx.InputDecorator', components: [
                             {kind: 'FittableColumns', style: 'width: 100%;',
                              components: [
-                                 {kind: 'onyx.Button', name: 'myButton',
-                                  content: 'Add Device', ontap: 'addDevice'},
+                                 {kind: 'onyx.Button', name: 'resetButton',
+                                  content: 'Reset',
+                                  style: 'margin-right: 60px;',
+                                  ontap: 'callReset'},
                                  {kind: 'onyx.Input', fit:true,
                                   name: 'deviceName',
                                   style: 'margin: 6px;',
-                                  placeholder: ' A unique id for your device'}
+                                  placeholder: ' A unique id for your device'},
+                                 {kind: 'onyx.Button', name: 'myButton',
+                                  content: 'Add Device', ontap: 'addDevice'}
                              ]}
-                        ]},
-                       {kind: 'onyx.InputDecorator', components: [
-                            {kind: 'onyx.Button', name: 'resetButton',
-                             content: 'Reset', ontap: 'callReset'}
                         ]}
                    ]},
-                  {tag: 'br'},
+//                  {tag: 'br'},
                   {kind: 'onyx.Toolbar', content: 'Devices'},
                   {fit: true, kind: 'Scroller', components: [
                        {kind: 'GadgetsList', name: 'gadgetsList',
-                        onOutputChange: 'newOutput'}
+                        onOutputChange: 'newOutput', onRemove: 'removeDevice'}
                    ]}
               ],
               learnedSelected: function(inSender, inEvent) {
                   var self = this;
                   var cbOK = function(msg) {
-                      self.$.iconresponse.setSrc("images/blank.png");
+                      self.$.rpsGroupResponse.selectOne(-1);
                   };
                   var cbError = function(error) {
-                      self.$.iconresponse.setSrc("images/blank.png");
+                      self.$.rpsGroupResponse.selectOne(-1);
                       console.log('ERROR:' + JSON.stringify(error));
                   };
                   this.mySession &&
                       this.mySession
                       .remoteInvoke('learn', [this.$.rpsGroup.getSelected(),
-                                              inEvent.userChoice],
+                                              inEvent.choice],
                                     cbOK, cbError);
                    return true;
 
@@ -139,7 +160,7 @@ enyo.kind({
               callCA: function(inSource, inEvent) {
                   var self = this;
                   var cbOK = function(msg) {
-                      self.$.iconresponse.setSrc(self.icons[msg]);
+                      self.$.rpsGroupResponse.selectOne(msg);
                   };
                   var cbError = function(error) {
                       console.log('ERROR:' + JSON.stringify(error));
@@ -152,7 +173,7 @@ enyo.kind({
               callReset: function(inSource, inEvent) {
                   var self = this;
                   var cbOK = function(msg) {
-                      self.$.iconresponse.setSrc("images/blank.png");
+                      self.$.rpsGroupResponse.selectOne(-1);
                   };
                   var cbError = function(error) {
                       console.log('ERROR:' + JSON.stringify(error));
@@ -162,11 +183,12 @@ enyo.kind({
                                                   cbOK, cbError);
                   return true;
               },
-
+/*
               callLearn:  function(inSource, inEvent) {
                   this.$.learnPopup.learn();
                   return true;
               },
+*/
               newOutput: function(inSource, inEvent) {
                   var cbOK = function(msg) {
                       console.log(JSON.stringify(msg));
@@ -199,6 +221,24 @@ enyo.kind({
                                                   cbOK, cbError);
                   return true;
               },
+              removeDevice: function(inSource, inEvent) {
+                  var self = this;
+                  var deviceId = inEvent.gadgetId;
+                  var cbOK = function(msg) {
+                      self.$.gadgetsList.removeGadget(deviceId);
+                      console.log("Remove:" + JSON.stringify(msg));
+                  };
+                  var cbError = function(error) {
+                      console.log('ERROR:' + JSON.stringify(error));
+                  };
+                  this.mySession &&
+                      this.mySession.remoteInvoke('removeGadget',
+                                                  [deviceId],
+                                                  cbOK, cbError);
+                  return true;
+
+
+              },
               loadGadgetsState: function() {
                   var self = this;
                   var cbOK = function(msg) {
@@ -219,7 +259,7 @@ enyo.kind({
               }
 
           });
-
+/*
 enyo.kind({
               name: 'LearnPopup',
               events: {
@@ -246,8 +286,9 @@ enyo.kind({
               },
               callT: function(inSender, inEvent) {
                   this.$.popup.hide();
-                  this.doLearned({userChoice: inEvent.choice});
+                  this.doLearned({choice: inEvent.choice});
                   return true;
               }
           });
 
+*/

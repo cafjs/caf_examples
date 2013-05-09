@@ -118,6 +118,10 @@ exports.methods = {
         this.$.iot.addIoT(gadgetId);
         cb(null, "ok");
     },
+    'removeGadget' : function(gadgetId, cb) {
+        this.$.iot.removeIoT(gadgetId);
+        cb(null, "ok");
+    },
     'changeOutput' : function(gadgetId, pin, isOn, cb) {
         var map = this.$.iot.getIoT(gadgetId);
         var outputs = map.fromCloud.outputs || 0;

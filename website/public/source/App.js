@@ -325,6 +325,7 @@ enyo.kind({
 enyo.kind({
               name: 'AppView',
               kind: 'FittableRows', classes: 'enyo-fit',
+              style: 'background: #F0F0F0;',
               published: {
                   appName: 'My cool app',
                   srcUrl: ''

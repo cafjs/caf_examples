@@ -10,16 +10,21 @@ enyo.kind({
               },
               events: {
                   onLock: "",
-                  onOutputChange: ""
+                  onOutputChange: "",
+                  onRemove: ""
               },
               components: [
+                  {name: 'remove', kind: 'onyx.IconButton',
+                   classes: 'remove-button',
+                   src: 'images/remove-icon.png',
+                   ontap: 'removeTap'},
                   {tag: 'b', name: 'gadgetTag'},
                   {tag: 'span', name: 'sensorTag'},
                   {kind: "onyx.Groupbox", components: [
                        {kind: "onyx.GroupboxHeader",
                         content: "Inputs |7|6|5|4|3|2|1|0|"},
                        {kind: enyo.Control, components: [
-                            {kind:"onyx.Checkbox", name: "input7", 
+                            {kind:"onyx.Checkbox", name: "input7",
                              disabled: true},
                             {kind:"onyx.Checkbox", name: "input6",
                              disabled: true},
@@ -60,6 +65,9 @@ enyo.kind({
                         ]}
                    ]}
               ],
+              removeTap: function(inSender, inEvent) {
+                  this.doRemove({gadgetId : this.gadgetId});
+              },
               checkboxChanged: function(inSource, inEvent) {
                   this.doLock();
                   var index = parseInt(inSource.getName()
@@ -75,7 +83,7 @@ enyo.kind({
               },
               sensorDataChanged: function() {
                   this.$.sensorTag.setContent(JSON.stringify(this.sensorData));
-                  var toCloud = (this.sensorData && this.sensorData.toCloud) 
+                  var toCloud = (this.sensorData && this.sensorData.toCloud)
                       || {};
                   var fromCloud = (this.sensorData && this.sensorData.fromCloud)
                       || {};
@@ -94,7 +102,7 @@ enyo.kind({
                   this.setCheckboxes(pending, 'output', 'yellow');
               },
               setCheckboxes: function(data, label, color) {
-                  if ((typeof data === 'number') && (data >= 0) && 
+                  if ((typeof data === 'number') && (data >= 0) &&
                       (data <= 255)) {
                       var mask = 1;
                       for (var i = 0; i < 8; i++) {
@@ -124,7 +132,7 @@ enyo.kind({
               keys: [],
               lockRefresh: false,
               components: [
-                  {kind: 'Repeater', name: 'list', count: 0, 
+                  {kind: 'Repeater', name: 'list', count: 0,
                    onSetupItem: 'setupItem',
                    components: [
                        {kind: 'GadgetItem', name: 'oneGadget', onLock: 'lock',
@@ -137,6 +145,10 @@ enyo.kind({
                       sensorData = {};
                   }
                   this.gadgets[name] = sensorData;
+                  this.gadgetsChanged();
+              },
+              removeGadget: function(name) {
+                  delete this.gadgets[name];
                   this.gadgetsChanged();
               },
               gadgetsChanged: function(inOldGadgets) {
