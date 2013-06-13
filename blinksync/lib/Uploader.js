@@ -25,20 +25,23 @@ limitations under the License.
 
 var Stream = require('stream').Stream;
 var util = require('util');
+var cli = require('caf_cli');
 
-var Uploader = exports.Uploader = function(delay) {
+var PIN_NUMBER = 0;
+
+var Uploader = exports.Uploader = function(delay, cloudSpec) {
     Stream.call(this);
     this.readable = true;
     this.writable = true;
     this.delay = delay;
     this.data = "";
-
+    this.cloudSpec = cloudSpec;
+    this.cloudSpec.disableBackChannel = true;
 };
 
 util.inherits(Uploader, Stream);
 
 Uploader.prototype.write = function (data) {
-
     this.data = data;
     return true;
 };
@@ -46,8 +49,31 @@ Uploader.prototype.write = function (data) {
 Uploader.prototype.end = function() {
 
     var zeroTime = new Date().getTime();
-    console.log(JSON.stringify(this.data));
-    this.emit('data', zeroTime);
-    this.emit('end');
-
+    var startTime = zeroTime + this.delay;
+    if (this.data) {
+        var command = [];
+        this.data.forEach(function(x) {
+                              var time = startTime + x.start;
+                              command.push({op: 'blink',
+                                            args: [time, x.duration,
+                                                   PIN_NUMBER]});
+                          });
+        var session = new cli.Session(this.cloudSpec);
+        var self = this;
+        var cb = function(err, data) {
+            if (err) {
+                console.log("Got error: " + JSON.stringify(err));
+                self.emit('error', err);
+            } else {
+                console.log("Response: " + JSON.stringify(data));
+                self.emit('data', zeroTime);
+                self.emit('end');
+            }
+        };
+        session.remoteInvoke('doCommand', [this.cloudSpec.device,
+                                           JSON.stringify(command)], cb);
+    } else {
+        console.log("Error: No data to upload");
+        this.emit('error',"Error: No data to upload");
+    }
 };

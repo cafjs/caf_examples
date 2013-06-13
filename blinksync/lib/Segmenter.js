@@ -115,7 +115,8 @@ Segmenter.prototype.end = function() {
                     i = i - 1;
                 } else {
                     up = false;
-                    intervals.push({start: start, duration: count});
+                    intervals.push({start: start*WINDOW_SIZE_MSEC,
+                                    duration: count*WINDOW_SIZE_MSEC});
                     start = 0;
                     count = 0;
                 }
@@ -129,7 +130,8 @@ Segmenter.prototype.end = function() {
         }
     }
     if (up) {
-        intervals.push({start: start, duration: count});
+        intervals.push({start: start*WINDOW_SIZE_MSEC,
+                        duration: count*WINDOW_SIZE_MSEC});
     }
     this.emit('data', intervals);
     this.emit('end');

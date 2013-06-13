@@ -30,13 +30,35 @@ var Player = require('./Player').Player;
 
 var DELAY = 5000;
 
-exports.main = function(fileName) {
+
+/**
+ * Main method.
+ *
+ * The type cloudSpecType is:
+ *
+ *  { url: string, // complete CA URL, e.g.,
+ *                 //   'http://helloiot.cafjs.com/ca/antonio_h2'
+ *    device: string, // ID of the target device
+ *    password: string,
+ *    accountsUrl: string, //Authentication service url
+ *    proxy: string, // http proxy url , e.g.,
+ *    delay: number // optional delay before start playing
+ * }
+ *
+ *
+ * @param {string} fileName A sound file name.
+ * @param {cloudSpecType} cloudSpec A configuration map.
+ *
+ *
+ */
+exports.main = function(fileName, cloudSpec) {
+    var delay = cloudSpec.delay || DELAY;
     var reader = new Reader();
     reader.on('format', function (format) {
                   //console.error('format:', format);
                   var seg = new Segmenter(format);
-                  var uploader = new Uploader(DELAY);
-                  var player = new Player(fileName, DELAY);
+                  var uploader = new Uploader(delay, cloudSpec);
+                  var player = new Player(fileName, delay);
                   reader.pipe(seg).pipe(uploader).pipe(player);
               });
 
