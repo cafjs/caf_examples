@@ -81,9 +81,10 @@ exports.methods = {
         } else {
             this.state.megaToken = megaToken;
             async.waterfall([function(cb0) {
-                                self.$.security
-                                     .attenuateToken(megaToken, appName,
-                                                     caLocalName, cb0);
+                                 var tokenDesc = {appName: appName,
+                                                  caLocalName: caLocalName};
+                                 self.$.security
+                                     .attenuateToken(megaToken, tokenDesc, cb0);
                              }],
                             function(err, token) {
                                 if (err) {

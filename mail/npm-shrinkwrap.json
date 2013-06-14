@@ -48,8 +48,9 @@
       "from": "async@>= 0.1.18"
     },
     "imap": {
-      "version": "0.7.11",
+      "version": "0.7.12",
       "from": "imap@>= 0.2.8",
+      "resolved": "http://registry.npmjs.org/imap/-/imap-0.7.12.tgz",
       "dependencies": {
         "utf7": {
           "version": "1.0.0",
@@ -59,10 +60,10 @@
       }
     },
     "caf_security": {
-      "version": "0.0.1",
+      "version": "0.0.2",
       "dependencies": {
         "caf_cli": {
-          "version": "0.0.1",
+          "version": "0.0.3",
           "dependencies": {
             "request": {
               "version": "2.12.0",
