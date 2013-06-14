@@ -181,6 +181,16 @@ exports.methods = {
         } else {
             cb('Invalid token');
         }
+    },
+    'multiRestrictToken' : function(token, conArray, cb) {
+        var self = this;
+        if (Array.isArray(conArray)) {
+            async.mapSeries(conArray, function(con, cb0) {
+                                self.restrictToken(token, con, cb0);
+                            }, cb);
+        } else {
+            cb('Constrains not in an array');
+        }
     }
 };
 

@@ -56,38 +56,22 @@ exports.methods = {
         }
         var self = this;
         var expired = findExpired(this.state);
-        var countOK = 0;
-        var attenuateF = function(val, cb0) {
-            async.waterfall([function(cb1) {
-                                 self.$.security
-                                     .attenuateToken(self.state.megaToken,
-                                                     val.appName,
-                                                     val.caLocalName,
-                                                     cb1);
-                             }],
-                            function(err, token) {
-                                if (err) {
-                                    console.log('Pulse error1:' +
-                                                JSON.stringify(err));
-                                } else {
-                                    val.token = token;
-                                    countOK++;
-                                }
-                                cb0(null); // do not stop others
-                            });
+        var cb1 = function(err, newTokens) {
+          if (err) {
+              cb(err);
+          } else {
+              newTokens.forEach(function(token, i) {
+                                    expired[i].token = token;
+                                });
+              self.$.session.notify({'renewed' : expired.length}, 'default');
+              cb(null);
+          }
         };
-        async.forEachSeries(expired, attenuateF, function(err) {
-                                if (err) {
-                                    console.log('Pulse error2:' +
-                                                JSON.stringify(err));
-                                }
-                                if (countOK > 0) {
-                                    self.$.session.notify({'renewed' : countOK},
-                                                          'default');
-                                }
-                                // do not undo the ones renewed OK
-                                cb(null);
-                            });
+        if (expired.length > 0) {
+            this.$.security.attenuateToken(this.state.megaToken, expired, cb1);
+        } else {
+            cb(null);
+        }
     },
     'addApp' : function(appName, caOwner, caLocalName, megaToken, cb) {
         var self = this;
