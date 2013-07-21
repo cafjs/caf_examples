@@ -37,7 +37,7 @@ var getDevicesState = function(self) {
                           var result =
                               {toCloud: clone(map.toCloud),
                                fromCloud: clone(map.fromCloud)};
-                          console.log(JSON.stringify(result));
+//                          console.log(JSON.stringify(result));
                           all[x] = result;
                       });
     return all;
