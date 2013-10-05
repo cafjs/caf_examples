@@ -34,9 +34,13 @@ var getDevicesState = function(self) {
     var deviceIds = self.$.iot.listDevices();
     deviceIds.forEach(function(x) {
                           var map = self.$.iot.getIoT(x);
-                          var result =
-                              {toCloud: clone(map.toCloud),
-                               fromCloud: clone(map.fromCloud)};
+                          var result = {};
+                          if (map) {
+                              result.toCloud = (map.toCloud ?
+                                                clone(map.toCloud) : {});
+                              result.fromCloud = (map.fromCloud ?
+                                                  clone(map.fromCloud) : {});
+                          }
 //                          console.log(JSON.stringify(result));
                           all[x] = result;
                       });
