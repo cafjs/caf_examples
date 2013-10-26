@@ -32,6 +32,15 @@ var LEFT_RIGHT_SPEED = [0, 0.5, 0.5];
 
 var LEFT_RIGHT_TIME = [0, 1000, 1500];
 
+var UP_DOWN_SPEED = 0.8; //Speed of UP and DOWN
+
+var UP_DOWN_DELAY = 5000; //Time from when command is sent until movement starts
+
+var UP_DOWN_TIME = 1500; //How long the drone moves up/down for
+
+var UP_DOWN_WAIT = 1000; //Time between moving up and moving down
+
+var DOWN_START = UP_DOWN_TIME + UP_DOWN_WAIT; //Time when the drone 1 starts moving down and drone 2 starts moving up
 
 var clone = function(map) {
     var result = {};
@@ -126,6 +135,16 @@ var computeShuffle = function(startPos, endPos) {
 };
 
 
+var newUpDownBundle = function() {
+    var b =  (new caf_ardrone.ArDroneBundle())
+	.move(0,0,UP_DOWN_SPEED,0,0)
+	.stop(UP_DOWN_TIME)
+	.move(0,0,-UP_DOWN_SPEED,0,UP_DOWN_WAIT)
+	.stop(UP_DOWN_TIME);
+	//.blink('blinkGreen',1,10,0)
+    return b.toJSON();
+};
+
 exports.methods = {
     '__ca_init__' : function(cb) {
         this.state.counter = -1;
@@ -216,8 +235,45 @@ exports.methods = {
                                 if ((typeof p.id === 'string') &&
                                     (typeof p.bundle === 'string')) {
                                     self.doBundle(p.id, when, p.bundle, cb0);
+                                } else {
+                                    // Ignore
+                                    cb0(null);
                                 }
                             }, cb);
+        }
+    },
+    'registerUpDown': function(droneSequence, cb) {
+        if (!Array.isArray(droneSequence) ) {
+	    cb('registerUpDown:Error: bad input' + droneSequence);
+	} else {
+            this.state.droneSequence = droneSequence;
+            cb(null, 'ok');
+        }
+    },
+    // order is an array with index numbers in droneSequence
+    'upDown': function(order, cb) {
+	var self = this;
+	if ( !Array.isArray(order) ) {
+	    cb('upDown: Error: Bad input' + order);
+	} else if (!Array.isArray(this.state.droneSequence)) {
+            cb('upDown: Error: Register drone sequence first');
+        } else {
+            var when = (new Date()).getTime() + UP_DOWN_DELAY;
+	    var all = [];
+	    order.forEach(function(index, i) {
+		              var time = when + DOWN_START*i;
+		              var bundle = newUpDownBundle();
+                              var id = self.state.droneSequence[index];
+		              all.push({id: id, bundle: bundle, when: time});
+                          });
+            async.mapSeries(all, function(p, cb0) {
+		                if (typeof p.id === 'string') {
+		                    self.doBundle(p.id, p.when, p.bundle, cb0);
+		                } else {
+                                    // ignore
+		                    cb0(null);
+		                }
+	                    }, cb);
         }
     }
 };

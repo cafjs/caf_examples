@@ -1,6 +1,6 @@
 {
   "name": "caf_drone",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "dependencies": {
     "caf_ardrone": {
       "version": "0.0.15",
