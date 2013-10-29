@@ -10,58 +10,51 @@ enyo.kind({
                   {kind: 'ca.LoginContext', name: 'login',
                    onSession: 'newSession', onNotification: 'newNotif'},
                   {tag: 'br'},
-                  {kind: 'onyx.Groupbox', components: [
-                       {kind: 'onyx.GroupboxHeader',
-                        content: 'Managing IoT devices'},
+                  {kind: 'onyx.Toolbar', content: 'Managing Drones'},
+                   {classes:  'onyx-toolbar-inline',
+                    components: [
+                        {kind: 'onyx.InputDecorator',
+                         components: [
+                            {kind: 'onyx.Input', name: 'deviceName',
+                             placeholder: ' drone Id'}
+                         ]
+                        },
+                        {kind: 'onyx.Button', name: 'myButton',
+                         content: 'Add Drone', ontap: 'addDevice'}
+                    ]
+                   },
+                  {classes:  'onyx-toolbar-inline',
+                   components: [
                        {kind: 'onyx.InputDecorator',
                         components: [
-                            {kind: 'onyx.Input', name: 'deviceName',
-                             style: 'width: 70%;',
-                             placeholder: ' A unique id for your drone'},
-                            {kind: 'onyx.Button', name: 'myButton',
-                             content: 'Add Drone', ontap: 'addDevice'}
-                        ]}
+                            {kind: 'onyx.Input', name: 'deviceOne',
+                             placeholder: ' first'
+                            }]
+                       },
+                       {kind: 'onyx.InputDecorator',
+                        components: [
+                            {kind: 'onyx.Input', name: 'deviceTwo',
+                             placeholder: ' second'}
+                        ]
+                       },
+                       {kind: 'onyx.InputDecorator',
+                        components: [
+                            {kind: 'onyx.Input', name: 'deviceThree',
+                             placeholder: ' third'}
+                        ]
+                       },
+                       {kind: 'onyx.Button', name: 'myUpDownButton',
+                        content: 'Up and Down', ontap: 'upDown'}
                    ]},
-                  {tag: 'br'},
                   {kind: 'onyx.Toolbar', content: 'Drones'},
                   {fit: true, kind: 'Scroller', components: [
-                       {kind: 'DronesList', name: 'dronesList',
-                        onCommand: 'newCommand', onOutputChange: 'newOutput'}
+                       {kind: 'DronesList', name: 'dronesList'}
                    ]}
               ],
               newSession: function(inSource, inEvent) {
                   this.mySession = inEvent.session;
                   this.caOwner = inEvent.caOwner;
                   this.loadDronesState();
-                  return true;
-              },
-              newCommand: function(inSource, inEvent) {
-                  var cbOK = function(msg) {
-                      console.log(JSON.stringify(msg));
-                  };
-                  var cbError = function(error) {
-                      console.log('ERROR:' + JSON.stringify(error));
-                  };
-                  var deviceId = inEvent.droneId;
-                  var command = inEvent.command;
-                  this.mySession && this.mySession
-                      .remoteInvoke('doCommand', [deviceId, command], cbOK,
-                                    cbError);
-                  return true;
-              },
-              newOutput: function(inSource, inEvent) {
-                  var cbOK = function(msg) {
-                      console.log(JSON.stringify(msg));
-                  };
-                  var cbError = function(error) {
-                      console.log('ERROR:' + JSON.stringify(error));
-                  };
-                  var deviceId = inEvent.droneId;
-                  var pin = inEvent.pin;
-                  var isOn = inEvent.isOn;
-                  this.mySession && this.mySession
-                      .remoteInvoke('changeOutput', [deviceId, pin, isOn],
-                                    cbOK, cbError);
                   return true;
               },
               loadDronesState: function() {
@@ -90,6 +83,34 @@ enyo.kind({
                   this.mySession &&
                       this.mySession.remoteInvoke('addDrone',
                                                   [deviceId],
+                                                  cbOK, cbError);
+                  return true;
+              },
+              upDown: function(inSource, inEvent) {
+                  var self = this;
+                  var one = parseInt(this.$.deviceOne.getValue());
+                  var two = parseInt(this.$.deviceTwo.getValue());
+                  var three = parseInt(this.$.deviceThree.getValue());
+                  if (isNaN(one) || isNaN(two) || isNaN(three)) {
+                      console.log('upDown:Ignoring bad input');
+                      return true;
+                  }
+                  // index starts by 0
+                  one = one -1;
+                  two = two -1;
+                  three = three -1;
+                  var cbOK = function(msg) {
+                      self.$.deviceOne.setValue("");
+                      self.$.deviceTwo.setValue("");
+                      self.$.deviceThree.setValue("");
+                      console.log(JSON.stringify(msg));
+                  };
+                  var cbError = function(error) {
+                      console.log('ERROR:' + JSON.stringify(error));
+                  };
+                  this.mySession &&
+                      this.mySession.remoteInvoke('upDown',
+                                                  [[one,two,three], true],
                                                   cbOK, cbError);
                   return true;
               },
