@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "dependencies": {
     "caf_ardrone": {
-      "version": "0.0.15",
+      "version": "0.0.19",
       "dependencies": {
         "ar-drone": {
           "version": "0.1.0",
@@ -146,7 +146,7 @@
       }
     },
     "caf_core": {
-      "version": "0.0.4",
+      "version": "0.0.5",
       "dependencies": {
         "express": {
           "version": "2.5.11",
@@ -190,7 +190,7 @@
       "version": "0.0.2",
       "dependencies": {
         "caf_cli": {
-          "version": "0.0.4",
+          "version": "0.0.5",
           "dependencies": {
             "request": {
               "version": "2.22.0",
