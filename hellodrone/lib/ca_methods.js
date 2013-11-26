@@ -42,6 +42,11 @@ var UP_DOWN_WAIT = 1000; //Time between moving up and moving down
 
 var DOWN_START = UP_DOWN_TIME + UP_DOWN_WAIT; //Time when the drone 1 starts moving down and drone 2 starts moving up
 
+var TAKEOFF_WAIT=5000; // wait until stabilizes
+
+var MAX_DRONES = 5;
+var LAND_WAIT= MAX_DRONES*DOWN_START;
+
 var clone = function(map) {
     var result = {};
     for (var key in map) {
@@ -135,12 +140,22 @@ var computeShuffle = function(startPos, endPos) {
 };
 
 
-var newUpDownBundle = function() {
-    var b =  (new caf_ardrone.ArDroneBundle())
-	.move(0,0,UP_DOWN_SPEED,0,0)
-	.stop(UP_DOWN_TIME)
-	.move(0,0,-UP_DOWN_SPEED,0,UP_DOWN_WAIT)
-	.stop(UP_DOWN_TIME);
+var newUpDownBundle = function(takeoff, i) {
+    var b =  (new caf_ardrone.ArDroneBundle());
+    if (takeoff) {
+	b.takeoff(0)
+            .move(0,0,UP_DOWN_SPEED,0,TAKEOFF_WAIT+i*DOWN_START)
+	    .stop(UP_DOWN_TIME)
+	    .move(0,0,-UP_DOWN_SPEED,0,UP_DOWN_WAIT)
+	    .stop(UP_DOWN_TIME)
+            .land(LAND_WAIT-i*DOWN_START);
+
+    } else {
+	b.move(0,0,UP_DOWN_SPEED,0,i*DOWN_START)
+	    .stop(UP_DOWN_TIME)
+	    .move(0,0,-UP_DOWN_SPEED,0,UP_DOWN_WAIT)
+	    .stop(UP_DOWN_TIME);
+    }
 	//.blink('blinkGreen',1,10,0)
     return b.toJSON();
 };
@@ -251,7 +266,7 @@ exports.methods = {
         }
     },
     // order is an array with index numbers in droneSequence
-    'upDown': function(order, cb) {
+    'upDown': function(order, takeoff, cb) {
 	var self = this;
 	if ( !Array.isArray(order) ) {
 	    cb('upDown: Error: Bad input' + order);
@@ -261,10 +276,9 @@ exports.methods = {
             var when = (new Date()).getTime() + UP_DOWN_DELAY;
 	    var all = [];
 	    order.forEach(function(index, i) {
-		              var time = when + DOWN_START*i;
-		              var bundle = newUpDownBundle();
+		              var bundle = newUpDownBundle(takeoff, i);
                               var id = self.state.droneSequence[index];
-		              all.push({id: id, bundle: bundle, when: time});
+		              all.push({id: id, bundle: bundle, when: when});
                           });
             async.mapSeries(all, function(p, cb0) {
 		                if (typeof p.id === 'string') {

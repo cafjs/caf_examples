@@ -139,7 +139,7 @@
             "name": "pulser",
             "description": "Cron job for enabling autonomous computation of CAs",
             "env": {
-                "interval" : 1
+                "interval" : 0.5
             }
         },
         {
