@@ -20,6 +20,8 @@ var myutils = caf.myutils;
 var async = caf.async;
 var caf_ardrone =require('caf_ardrone');
 
+var MAX_HISTORY = 10;
+
 var MAX_NUM_NOTIF = 2;
 
 var SHUFFLE_DELAY= 5000;  // 5 seconds
@@ -160,9 +162,24 @@ var newUpDownBundle = function(takeoff, i) {
     return b.toJSON();
 };
 
+
+var addToHistory = function(self, record) {
+    if (!self.state.history) {
+        self.state.history = [];
+    }
+    var history = self.state.history;
+
+    if (history.length >= MAX_HISTORY) {
+        history.shift();
+    }
+    history.push(record);
+};
+
+
 exports.methods = {
     '__ca_init__' : function(cb) {
         this.state.counter = -1;
+        this.state.history = [];
         cb(null);
     },
     '__ca_pulse__' : function(cb) {
@@ -175,8 +192,9 @@ exports.methods = {
                           });
 
         this.$.session.boundQueue(MAX_NUM_NOTIF, 'default');
-        this.$.session.notify([this.state.counter,
-                               getDevicesState(this)], 'default');
+        var record = [this.state.counter, getDevicesState(this)];
+        addToHistory(this, record);
+        this.$.session.notify(record, 'default');
         cb(null);
     },
     'addDrone' : function(droneId, cb) {
@@ -233,6 +251,10 @@ exports.methods = {
     },
     'getSensorData': function(cb) {
         cb(null, {drones: getDevicesState(this)});
+    },
+    'getHistorySensorData' : function(cb) {
+        // 'history' is an array of tuples [timestamp, devicesState]
+        cb(null, this.state.history || []);
     },
     'shuffle': function(startPos, endPos, cb) {
         var self = this;
