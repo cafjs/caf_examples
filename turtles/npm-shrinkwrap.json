@@ -190,7 +190,7 @@
       }
     },
     "caf_deploy": {
-      "version": "0.0.5",
+      "version": "0.0.6",
       "dependencies": {
         "rimraf": {
           "version": "2.1.1",

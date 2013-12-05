@@ -121,6 +121,7 @@
                 "target" : "http://api.cafjs.com",
                 "user" : "foo@bar.com",
                 "password" : "cfpassword",
+                "map" : null,
                 "memory" : 64,
                 "instances": 1,
                 "services" :["redis"]
