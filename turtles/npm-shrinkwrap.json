@@ -1,6 +1,6 @@
 {
   "name": "caf_turtles",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "caf_core": {
       "version": "0.0.5",
@@ -190,7 +190,7 @@
       }
     },
     "caf_deploy": {
-      "version": "0.0.6",
+      "version": "0.0.7",
       "dependencies": {
         "rimraf": {
           "version": "2.1.1",
