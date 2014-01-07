@@ -1,6 +1,6 @@
 {
   "name": "caf_turtles",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "caf_core": {
       "version": "0.0.5",
