@@ -44,7 +44,7 @@ enyo.kind({
                         ]
                        },
                        {kind: 'onyx.Button', name: 'myUpDownButton',
-                        content: 'Up and Down', ontap: 'upDown'}
+                        content: 'Blink Away', ontap: 'upDown'}
                    ]},
                   {kind: 'onyx.Toolbar', content: 'Drones'},
                   {fit: true, kind: 'Scroller', components: [
@@ -108,9 +108,13 @@ enyo.kind({
                   var cbError = function(error) {
                       console.log('ERROR:' + JSON.stringify(error));
                   };
+                  // this.mySession &&
+                  //     this.mySession.remoteInvoke('upDown',
+                  //                                 [[one,two,three], true],
+                  //                                 cbOK, cbError);
                   this.mySession &&
-                      this.mySession.remoteInvoke('upDown',
-                                                  [[one,two,three], true],
+                      this.mySession.remoteInvoke('blinkAway',
+                                                  [[one,two,three]],
                                                   cbOK, cbError);
                   return true;
               },

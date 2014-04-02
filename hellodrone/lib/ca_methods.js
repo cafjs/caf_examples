@@ -49,6 +49,11 @@ var TAKEOFF_WAIT=5000; // wait until stabilizes
 var MAX_DRONES = 5;
 var LAND_WAIT= MAX_DRONES*DOWN_START;
 
+var BLINK_AWAY_TIME=5;
+
+var  BLINK_AWAY_DELAY=3000;
+
+
 var clone = function(map) {
     var result = {};
     for (var key in map) {
@@ -162,6 +167,12 @@ var newUpDownBundle = function(takeoff, i) {
     return b.toJSON();
 };
 
+var newBlinkAwayBundle = function(i) {
+    var b =  (new caf_ardrone.ArDroneBundle());
+    var actions = ['blinkGreen','blinkRed','blinkOrange'];
+    b.blink(actions[i], 1, BLINK_AWAY_TIME, i*1000*BLINK_AWAY_TIME);
+    return b.toJSON();
+};
 
 var addToHistory = function(self, record) {
     if (!self.state.history) {
@@ -311,7 +322,39 @@ exports.methods = {
 		                }
 	                    }, cb);
         }
+    },
+
+    'registerBlinkAway': function(droneSequence, cb) {
+        this.registerUpDown(droneSequence, cb);
+    },
+
+    // order is an array with index numbers in droneSequence
+    'blinkAway': function(order, cb) {
+	var self = this;
+	if ( !Array.isArray(order) ) {
+	    cb('blinkAway: Error: Bad input' + order);
+	} else if (!Array.isArray(this.state.droneSequence)) {
+            cb('blinkAway: Error: Register drone sequence first');
+        } else {
+            var when = (new Date()).getTime() + BLINK_AWAY_DELAY;
+	    var all = [];
+	    order.forEach(function(index, i) {
+		              var bundle = newBlinkAwayBundle(i);
+                              var id = self.state.droneSequence[index];
+		              all.push({id: id, bundle: bundle, when: when});
+                          });
+            async.mapSeries(all, function(p, cb0) {
+		                if (typeof p.id === 'string') {
+		                    self.doBundle(p.id, p.when, p.bundle, cb0);
+		                } else {
+                                    // ignore
+		                    cb0(null);
+		                }
+	                    }, cb);
+        }
     }
+
+
 };
 
 
