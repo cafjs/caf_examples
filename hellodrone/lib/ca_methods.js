@@ -51,7 +51,7 @@ var LAND_WAIT= MAX_DRONES*DOWN_START;
 
 var BLINK_AWAY_TIME=5;
 
-var  BLINK_AWAY_DELAY=3000;
+var  BLINK_AWAY_DELAY=4000;
 
 
 var clone = function(map) {
