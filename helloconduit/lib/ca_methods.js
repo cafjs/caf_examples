@@ -98,10 +98,12 @@ var methods = exports.methods = {
         this.state.opStr = opStr;
         var op = conduit.parse(opStr);
         this.scratch.op = op.__behavior__(methods);
-        cb(null, this.state.acc);
+        this.state.acc = {};
+        this.scratch.op.__fold__(this.state.acc, cb);
     },
-    'getAcc' : function(cb) {
-        cb(null, this.state.acc);
+    // State is {acc:Object, opStr:string}
+    'getState' : function(cb) {
+        cb(null, this.state);
     }
 };
 
