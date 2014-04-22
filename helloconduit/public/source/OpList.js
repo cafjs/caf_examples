@@ -2,26 +2,62 @@ enyo.kind({
               name: 'OpItem',
               kind: enyo.Control,
               tag: 'div',
-              style: 'border-style: solid; border-width: 2px; ' +
-                  'padding: 10px; margin: 10px; min-height: 20px',
+              style: 'border-style: solid; border-width: 1px; ' +
+                  'padding: 5px; margin: 5px; min-height: 10px',
               published: {
                   opId: '',
-                  sensorData: ''
+                  data: ''
               },
               components: [
-                  {tag: 'b', name: 'opTag'},
-                  {tag: 'span', name: 'sensorTag'}
+                  {tag: 'b', name: 'opIdTag'},
+                  {tag: 'span', name: 'dataTag'}
               ],
-              opIdChanged: function() {
-                  this.$.opTag.setContent(this.opId + ': ');
+              opIdTagChanged: function() {
+                  this.$.opIdTag.setContent(this.opId + ': ');
                   return true;
               },
-              sensorDataChanged: function() {
-                  this.$.sensorTag.setContent(JSON.stringify(this.sensorData));
-                  var toCloud = (this.sensorData && this.sensorData.toCloud)
-                      || {};
-                  var fromCloud = (this.sensorData && this.sensorData.fromCloud)
-                      || {};
+              dataChanged: function() {
+                  var str = '';
+                  var opCh = {'doPlus': '+', 'doMinus': '-', 'doMul': '*',
+                              'doDiv': '/'};
+                  var prettyPrint = function(data) {
+                      if (typeof data === 'object') {
+                          switch (data.type) {
+                          case 'seq':
+                              // really slow for large strings...
+                              str = str + '( ';
+                              data.children.forEach(function(x) {
+                                                        prettyPrint(x);
+                                                         str = str + '; ';
+                                                    });
+                              str = str + ' )';
+                              break;
+                          case 'par':
+                              str = str + '( ';
+                              var last = data.children.length -1;
+                              data.children.forEach(function(x, i) {
+                                                        prettyPrint(x);
+                                                        if (i !== last) {
+                                                            str = str + ' | ';
+                                                        }
+                                                    });
+                              str = str + ' )';
+                              break;
+                          case 'method':
+                              str = str + '<' + data.label +'>: ';
+                              if (data.name === 'doCons') {
+                                   str = str + data.args.value;
+                              } else {
+                                  str = str + '<' + data.args.left + '>';
+                                  str = str + opCh[data.name];
+                                  str = str + '<' + data.args.right + '>';
+                              }
+                              break;
+                          }
+                      }
+                  };
+                  prettyPrint(this.data);
+                  this.$.dataTag.setContent(str);
                   return true;
               }
           });
@@ -30,9 +66,9 @@ enyo.kind({
               name: 'OpList',
               kind: enyo.Control,
               published: {
-                  op: {}
+                  op: null
               },
-              keys: [],
+              stack: [],
               components: [
                   {kind: 'Repeater', name: 'list', count: 0,
                    onSetupItem: 'setupItem',
@@ -41,36 +77,19 @@ enyo.kind({
                    ]}
 
               ],
-              addOp: function(name, sensorData) {
-                  if (!sensorData) {
-                      sensorData = {};
-                  }
-                  this.op[name] = sensorData;
-                  this.opChanged();
-              },
               opChanged: function(inOldOp) {
-                  // Object.keys not supported in IE8
-                  var getKeys = Object.keys || function(obj) {
-                      var result = [];
-                      for (var name in obj) {
-                          if (obj.hasOwnProperty(name)) {
-                              result.push(name);
-                          }
-                      }
-                      return result;
-                  };
-                  this.keys = getKeys(this.op).sort();
-                  this.$.list.setCount(this.keys.length);
+                  this.stack = (this.op &&
+                               this.op.__map__(function(x) { return x;})) || [];
+                  this.$.list.setCount(this.stack.length);
                   this.$.list.build();
                   this.render();
                   return true;
               },
               setupItem: function(inSender, rowHandle) {
-                  var key = this.keys[rowHandle.index];
-                  var sensorData = this.op[key];
+                  var entry = this.stack[rowHandle.index];
                   var oneOp = rowHandle.item.$.oneOp;
-                  oneOp.setOpId(key);
-                  oneOp.setSensorData(sensorData);
+                  //oneOp.setOpId(key);
+                  oneOp.setData(entry);
                   return true;
               }
           });

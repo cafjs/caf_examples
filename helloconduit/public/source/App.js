@@ -11,7 +11,7 @@ enyo.kind({
                   {kind: 'ca.LoginContext', name: 'login',
                    onSession: 'newSession', onNotification: 'newNotif'},
                   {tag: 'br'},
-                  {kind: 'onyx.Toolbar', content: 'Operations'},
+                  {kind: 'onyx.Toolbar', content: 'Build'},
                   {classes:  'onyx-toolbar-inline',
                    components: [
                        {kind: 'onyx.InputDecorator',
@@ -72,6 +72,11 @@ enyo.kind({
                        {kind: 'onyx.Button', name: 'div',
                         content: 'Div', ontap: 'addDiv'}
                    ]},
+                  {fit: true, kind: 'Scroller', components: [
+                       {kind: 'OpList', name: 'opList'}
+                   ]
+                  },
+                  {kind: 'onyx.Toolbar', content: 'Manage'},
                   {classes:  'onyx-toolbar-inline',
                    components: [
                        {kind: 'onyx.Button', name: 'submit',
@@ -80,10 +85,6 @@ enyo.kind({
                         content: 'Query', ontap: 'nowQuery'},
                        {kind: 'onyx.Button', name: 'clear',
                         content: 'Clear', ontap: 'nowClear'}
-                   ]},
-                  {kind: 'onyx.Toolbar', content: 'Op'},
-                  {fit: true, kind: 'Scroller', components: [
-                       {kind: 'OpList', name: 'opList'}
                    ]}
               ],
               addSerial: function(inSource, inEvent) {
@@ -138,6 +139,7 @@ enyo.kind({
                   return true;
               },
               display: function() {
+                  this.$.opList.setOp(this.op);
                   var all = this.op.__map__(function(x) { return x;});
                   console.log(JSON.stringify(all));
               },
