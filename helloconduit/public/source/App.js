@@ -3,6 +3,7 @@ enyo.kind({
               classes: 'onyx enyo-fit',
               kind: 'FittableRows',
               caOwner: '',
+              op:null,
               mySession: null,
               components: [
                   {kind: 'onyx.Toolbar', content: 'Conduit Hello World!'},
@@ -29,11 +30,17 @@ enyo.kind({
                    components: [
                        {kind: 'onyx.InputDecorator',
                         components: [
-                            {kind: 'onyx.Input', name: 'constant',
+                            {kind: 'onyx.Input', name: 'constantId',
+                             placeholder: 'unique ID'}
+                         ]
+                       },
+                       {kind: 'onyx.InputDecorator',
+                        components: [
+                            {kind: 'onyx.Input', name: 'constantVal',
                              placeholder: '0'}
                          ]
                        },
-                       {kind: 'onyx.Button', name: 'constantButton',
+                       {kind: 'onyx.Button', name: 'constant',
                         content: 'Constant', ontap: 'addConstant'}
                    ]},
                   {classes:  'onyx-toolbar-inline',
@@ -79,9 +86,87 @@ enyo.kind({
                        {kind: 'OpList', name: 'opList'}
                    ]}
               ],
+              addSerial: function(inSource, inEvent) {
+                  this.op = this.op.__seq__(parseInt(this.$.numSerPar
+                                                     .getValue()) || 2);
+                  this.display();
+                  return true;
+              },
+              addParallel: function(inSource, inEvent) {
+                  this.op = this.op.__par__(parseInt(this.$.numSerPar
+                                                     .getValue()) || 2);
+                  this.display();
+                  return true;
+              },
+              addConstant: function(inSource, inEvent) {
+                  var val = parseInt(this.$.constantVal.getValue()) || 0;
+                  var id = this.$.constantId.getValue() || null;
+                  this.op = this.op.doCons({'value' : val}, id);
+                  this.display();
+                  return true;
+              },
+              addPlus:  function(inSource, inEvent) {
+                  var id = this.$.id.getValue() || null;
+                  var left =  this.$.left.getValue() || null;
+                  var right =  this.$.right.getValue() || null;
+                  this.op = this.op.doPlus({'left' : left, 'right': right}, id);
+                  this.display();
+                  return true;
+              },
+              addMinus:  function(inSource, inEvent) {
+                  var id = this.$.id.getValue() || null;
+                  var left =  this.$.left.getValue() || null;
+                  var right =  this.$.right.getValue() || null;
+                  this.op = this.op.doMinus({'left' : left, 'right': right}, id);
+                  this.display();
+                  return true;
+              },
+              addMul:  function(inSource, inEvent) {
+                  var id = this.$.id.getValue() || null;
+                  var left =  this.$.left.getValue() || null;
+                  var right =  this.$.right.getValue() || null;
+                  this.op = this.op.doMul({'left' : left, 'right': right}, id);
+                  this.display();
+                  return true;
+              },
+              addDiv:  function(inSource, inEvent) {
+                  var id = this.$.id.getValue() || null;
+                  var left =  this.$.left.getValue() || null;
+                  var right =  this.$.right.getValue() || null;
+                  this.op = this.op.doDiv({'left' : left, 'right': right}, id);
+                  this.display();
+                  return true;
+              },
+              display: function() {
+                  var all = this.op.__map__(function(x) { return x;});
+                  console.log(JSON.stringify(all));
+              },
+              nowClear : function(inSource, inEvent) {
+                  this.op = conduit.newInstance(['doCons', 'doPlus', 'doMinus',
+                                                 'doDiv', 'doMul']);
+                  this.display();
+                  return true;
+              },
+              nowSubmit : function(inSource, inEvent) {
+                  var self = this;
+                  var cbOK = function(msg) {
+//                      self.$.opList.setOp(msg.op);
+                      console.log(JSON.stringify(msg));
+                  };
+                  var cbError = function(error) {
+                      console.log('ERROR:' + JSON.stringify(error));
+                  };
+                  this.mySession && this.mySession
+                      .remoteInvoke('newOp', [self.op.__stringify__()],
+                                    cbOK, cbError);
+                  return true;
+              },
               newSession: function(inSource, inEvent) {
                   this.mySession = inEvent.session;
                   this.caOwner = inEvent.caOwner;
+                  this.op = conduit.newInstance(['doCons', 'doPlus', 'doMinus',
+                                                 'doDiv', 'doMul']);
+
                   this.nowQuery();
                   return true;
               },
@@ -96,55 +181,6 @@ enyo.kind({
                   };
                   this.mySession && this.mySession
                       .remoteInvoke('getState', [], cbOK, cbError);
-              },
-              addDevice: function(inSource, inEvent) {
-                  var self = this;
-                  var deviceId = this.$.deviceName.getValue();
-                  var cbOK = function(msg) {
-                      self.$.opList.addOp(deviceId);
-                      self.$.deviceName.setValue("");
-                      console.log(JSON.stringify(msg));
-                  };
-                  var cbError = function(error) {
-                      console.log('ERROR:' + JSON.stringify(error));
-                  };
-                  this.mySession &&
-                      this.mySession.remoteInvoke('addOp',
-                                                  [deviceId],
-                                                  cbOK, cbError);
-                  return true;
-              },
-              upDown: function(inSource, inEvent) {
-                  var self = this;
-                  var one = parseInt(this.$.deviceOne.getValue());
-                  var two = parseInt(this.$.deviceTwo.getValue());
-                  var three = parseInt(this.$.deviceThree.getValue());
-                  if (isNaN(one) || isNaN(two) || isNaN(three)) {
-                      console.log('upDown:Ignoring bad input');
-                      return true;
-                  }
-                  // index starts by 0
-                  one = one -1;
-                  two = two -1;
-                  three = three -1;
-                  var cbOK = function(msg) {
-                      self.$.deviceOne.setValue("");
-                      self.$.deviceTwo.setValue("");
-                      self.$.deviceThree.setValue("");
-                      console.log(JSON.stringify(msg));
-                  };
-                  var cbError = function(error) {
-                      console.log('ERROR:' + JSON.stringify(error));
-                  };
-                  // this.mySession &&
-                  //     this.mySession.remoteInvoke('upDown',
-                  //                                 [[one,two,three], true],
-                  //                                 cbOK, cbError);
-                  this.mySession &&
-                      this.mySession.remoteInvoke('blinkAway',
-                                                  [[one,two,three]],
-                                                  cbOK, cbError);
-                  return true;
               }
           });
 
