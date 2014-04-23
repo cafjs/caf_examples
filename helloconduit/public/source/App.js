@@ -4,12 +4,14 @@ enyo.kind({
               kind: 'FittableRows',
               caOwner: '',
               op:null,
+              history:[],
               mySession: null,
               components: [
                   {kind: 'onyx.Toolbar', content: 'Conduit Hello World!'},
                   {tag: 'br'},
                   {kind: 'ca.LoginContext', name: 'login',
                    onSession: 'newSession', onNotification: 'newNotif'},
+                  {kind: 'ErrorPopup', name: 'errorPopup'},
                   {tag: 'br'},
                   {kind: 'onyx.Toolbar', content: 'Build'},
                   {classes:  'onyx-toolbar-inline',
@@ -83,60 +85,79 @@ enyo.kind({
                         content: 'Submit', ontap: 'nowSubmit'},
                        {kind: 'onyx.Button', name: 'query',
                         content: 'Query', ontap: 'nowQuery'},
+                       {kind: 'onyx.Button', name: 'undo',
+                        content: 'Undo', ontap: 'undo'},
                        {kind: 'onyx.Button', name: 'clear',
                         content: 'Clear', ontap: 'nowClear'}
                    ]}
               ],
               addSerial: function(inSource, inEvent) {
-                  this.op = this.op.__seq__(parseInt(this.$.numSerPar
+                  try {
+                      this.history.push(this.op);
+                      this.op = this.op.__seq__(parseInt(this.$.numSerPar
                                                      .getValue()) || 2);
-                  this.display();
-                  return true;
-              },
+                      this.display();
+                  } catch (e) {
+                      this.history.pop();
+                      this.notify(e.toString());
+                  } finally {
+                      return true;
+                  } 
+             },
               addParallel: function(inSource, inEvent) {
-                  this.op = this.op.__par__(parseInt(this.$.numSerPar
-                                                     .getValue()) || 2);
-                  this.display();
-                  return true;
+                  try {
+                      this.history.push(this.op);
+                      this.op = this.op.__par__(parseInt(this.$.numSerPar
+                                                         .getValue()) || 2);
+                      this.display();
+                  } catch (e) {
+                      this.history.pop();
+                      this.notify(e.toString());
+                  } finally {
+                      return true;
+                  }
               },
               addConstant: function(inSource, inEvent) {
-                  var val = parseInt(this.$.constantVal.getValue()) || 0;
-                  var id = this.$.constantId.getValue() || null;
-                  this.op = this.op.doCons({'value' : val}, null,  id);
-                  this.display();
-                  return true;
+                  try {
+                      this.history.push(this.op);
+                      var val = parseInt(this.$.constantVal.getValue()) || 0;
+                      var id = this.$.constantId.getValue() || null;
+                      this.op = this.op.doCons({'value' : val}, null,  id);
+                      this.display();
+                  } catch (e) {
+                      this.history.pop();
+                      this.notify(e.toString());
+                  } finally {
+                      return true;
+                  }
+              },
+              addBinOp : function(inSource, inEvent, opName) {
+                  try {
+                      this.history.push(this.op);
+                      var id = this.$.id.getValue() || null;
+                      var left =  this.$.left.getValue() || null;
+                      var right =  this.$.right.getValue() || null;
+                      this.op = this.op[opName](null, {'left' : left,
+                                                       'right': right}, id);
+                      this.display();
+                  } catch (e) {
+                      this.history.pop();
+                      this.notify(e.toString());
+                  } finally {
+                      return true;
+                  }
               },
               addPlus:  function(inSource, inEvent) {
-                  var id = this.$.id.getValue() || null;
-                  var left =  this.$.left.getValue() || null;
-                  var right =  this.$.right.getValue() || null;
-                  this.op = this.op.doPlus(null, {'left' : left, 'right': right}, id);
-                  this.display();
-                  return true;
+                  return this.addBinOp(inSource, inEvent, 'doPlus');
               },
               addMinus:  function(inSource, inEvent) {
-                  var id = this.$.id.getValue() || null;
-                  var left =  this.$.left.getValue() || null;
-                  var right =  this.$.right.getValue() || null;
-                  this.op = this.op.doMinus(null, {'left' : left, 'right': right}, id);
-                  this.display();
-                  return true;
+                  return this.addBinOp(inSource, inEvent, 'doMinus');
               },
               addMul:  function(inSource, inEvent) {
-                  var id = this.$.id.getValue() || null;
-                  var left =  this.$.left.getValue() || null;
-                  var right =  this.$.right.getValue() || null;
-                  this.op = this.op.doMul(null, {'left' : left, 'right': right}, id);
-                  this.display();
-                  return true;
+                  return this.addBinOp(inSource, inEvent, 'doMul');
               },
               addDiv:  function(inSource, inEvent) {
-                  var id = this.$.id.getValue() || null;
-                  var left =  this.$.left.getValue() || null;
-                  var right =  this.$.right.getValue() || null;
-                  this.op = this.op.doDiv(null, {'left' : left, 'right': right}, id);
-                  this.display();
-                  return true;
+                  return this.addBinOp(inSource, inEvent, 'doDiv');
               },
               display: function() {
                   this.$.opList.setOp(this.op);
@@ -146,6 +167,7 @@ enyo.kind({
               nowClear : function(inSource, inEvent) {
                   this.op = conduit.newInstance(['doCons', 'doPlus', 'doMinus',
                                                  'doDiv', 'doMul']);
+                  this.history = [];
                   this.display();
                   return true;
               },
@@ -183,7 +205,43 @@ enyo.kind({
                   };
                   this.mySession && this.mySession
                       .remoteInvoke('getState', [], cbOK, cbError);
+              },
+              notify: function(msg) {
+                  this.$.errorPopup.notify(msg);
+              },
+              undo: function(inSource, inEvent) {
+                  var last = this.history.pop() ||
+                      conduit.newInstance(['doCons', 'doPlus', 'doMinus',
+                                           'doDiv', 'doMul']);
+                  this.op = last;
+                  this.display();
+                  return true;
               }
           });
 
 
+enyo.kind({
+              name: 'ErrorPopup',
+              components: [
+                  {
+                      kind: 'onyx.Popup',
+                      name: 'popup',
+                      centered: true,
+                      modal: true,
+                      floating: true,
+                      components: [
+                          {tag: 'b', name: 'msgTag'},
+                          {kind: 'onyx.Button', name: 'ok',
+                           content: 'OK', ontap: 'popHide'}
+                      ]
+                  }
+              ],
+              notify: function(msg) {
+                  this.$.msgTag.setContent(msg);
+                  this.$.popup.show();
+              },
+              popHide: function(inSender, inEvent) {
+                  this.$.popup.hide();
+                  return true;
+              }
+          });
