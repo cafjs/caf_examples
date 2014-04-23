@@ -102,7 +102,7 @@ enyo.kind({
               addConstant: function(inSource, inEvent) {
                   var val = parseInt(this.$.constantVal.getValue()) || 0;
                   var id = this.$.constantId.getValue() || null;
-                  this.op = this.op.doCons({'value' : val}, id);
+                  this.op = this.op.doCons({'value' : val}, null,  id);
                   this.display();
                   return true;
               },
@@ -110,7 +110,7 @@ enyo.kind({
                   var id = this.$.id.getValue() || null;
                   var left =  this.$.left.getValue() || null;
                   var right =  this.$.right.getValue() || null;
-                  this.op = this.op.doPlus({'left' : left, 'right': right}, id);
+                  this.op = this.op.doPlus(null, {'left' : left, 'right': right}, id);
                   this.display();
                   return true;
               },
@@ -118,7 +118,7 @@ enyo.kind({
                   var id = this.$.id.getValue() || null;
                   var left =  this.$.left.getValue() || null;
                   var right =  this.$.right.getValue() || null;
-                  this.op = this.op.doMinus({'left' : left, 'right': right}, id);
+                  this.op = this.op.doMinus(null, {'left' : left, 'right': right}, id);
                   this.display();
                   return true;
               },
@@ -126,7 +126,7 @@ enyo.kind({
                   var id = this.$.id.getValue() || null;
                   var left =  this.$.left.getValue() || null;
                   var right =  this.$.right.getValue() || null;
-                  this.op = this.op.doMul({'left' : left, 'right': right}, id);
+                  this.op = this.op.doMul(null, {'left' : left, 'right': right}, id);
                   this.display();
                   return true;
               },
@@ -134,7 +134,7 @@ enyo.kind({
                   var id = this.$.id.getValue() || null;
                   var left =  this.$.left.getValue() || null;
                   var right =  this.$.right.getValue() || null;
-                  this.op = this.op.doDiv({'left' : left, 'right': right}, id);
+                  this.op = this.op.doDiv(null, {'left' : left, 'right': right}, id);
                   this.display();
                   return true;
               },

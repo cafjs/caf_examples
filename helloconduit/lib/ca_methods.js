@@ -24,15 +24,15 @@ var MUL_DELAY = 200;
 var DIV_DELAY = 300;
 var CONS_DELAY = 0;
 
-var getLeft = function(acc, args) {
-    var left = args.left && acc[args.left] &&
-        acc[args.left].data &&  acc[args.left].data.value || 0;
+var getLeft = function(acc, deps) {
+    var left = deps && deps.left && acc[deps.left] &&
+        acc[deps.left].data &&  acc[deps.left].data.value || 0;
     return left;
 };
 
-var getRight = function(acc, args) {
-    var right = args.right && acc[args.right] &&
-        acc[args.right].data &&  acc[args.right].data.value || 0;
+var getRight = function(acc, deps) {
+    var right = deps && deps.right && acc[deps.right] &&
+        acc[deps.right].data &&  acc[deps.right].data.value || 0;
     return right;
 };
 
@@ -61,35 +61,35 @@ var methods = exports.methods = {
             cb(null);
         }
     },
-    'doPlus' : function(acc, args, cb) {
+    'doPlus' : function(acc, args, deps, label, cb) {
         setTimeout(function() {
-                       var left = getLeft(acc, args);
-                       var right = getRight(acc, args);
+                       var left = getLeft(acc, deps);
+                       var right = getRight(acc, deps);
                        cb(null, {name:'+', value: left+right});
                    }, PLUS_DELAY);
     },
-    'doMinus' : function(acc, args, cb) {
+    'doMinus' : function(acc, args, deps, label,  cb) {
         setTimeout(function() {
-                       var left = getLeft(acc, args);
-                       var right = getRight(acc, args);
+                       var left = getLeft(acc, deps);
+                       var right = getRight(acc, deps);
                        cb(null, {name:'-', value: left-right});
                    }, MINUS_DELAY);
     },
-    'doMul' : function(acc, args, cb) {
+    'doMul' : function(acc, args, deps, label, cb) {
         setTimeout(function() {
-                       var left = getLeft(acc, args);
-                       var right = getRight(acc, args);
+                       var left = getLeft(acc, deps);
+                       var right = getRight(acc, deps);
                        cb(null, {name:'*', value: left*right});
                    }, MUL_DELAY);
     },
-    'doDiv' : function(acc, args, cb) {
+    'doDiv' : function(acc, args, deps, label, cb) {
         setTimeout(function() {
-                       var left = getLeft(acc, args);
-                       var right = getRight(acc, args)|| 1;
+                       var left = getLeft(acc, deps);
+                       var right = getRight(acc, deps)|| 1;
                        cb(null, {name:'/', value: left/right});
                    }, DIV_DELAY);
     },
-    'doCons' : function(acc, args, cb) {
+    'doCons' : function(acc, args, deps, label, cb) {
         setTimeout(function() {
                        cb(null, {name:'constant', value: args.value || 0});
                    }, CONS_DELAY);

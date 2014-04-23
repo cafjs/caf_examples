@@ -48,9 +48,9 @@ enyo.kind({
                               if (data.name === 'doCons') {
                                    str = str + data.args.value;
                               } else {
-                                  str = str + '<' + data.args.left + '>';
+                                  str = str + '<' + data.deps.left + '>';
                                   str = str + opCh[data.name];
-                                  str = str + '<' + data.args.right + '>';
+                                  str = str + '<' + data.deps.right + '>';
                               }
                               break;
                           }
