@@ -78,6 +78,14 @@ enyo.kind({
                        {kind: 'OpList', name: 'opList'}
                    ]
                   },
+                  {kind: 'onyx.Toolbar', content: 'Results'},
+                  {kind: 'enyo.Control', tag:'div',
+                   style: 'border-style: solid; border-width: 1px; ' +
+                   'padding: 5px; margin: 5px; min-height: 40px',
+                   components: [
+                       {tag: 'span', name: 'resultTag'}
+                   ]
+                  },
                   {kind: 'onyx.Toolbar', content: 'Manage'},
                   {classes:  'onyx-toolbar-inline',
                    components: [
@@ -102,7 +110,7 @@ enyo.kind({
                       this.notify(e.toString());
                   } finally {
                       return true;
-                  } 
+                  }
              },
               addParallel: function(inSource, inEvent) {
                   try {
@@ -171,10 +179,17 @@ enyo.kind({
                   this.display();
                   return true;
               },
+              writeResults : function(res) {
+                  var out = {};
+                  Object.keys(res).forEach(function(x) {
+                                               out[x] = res[x].data.value;
+                                           });
+                  this.$.resultTag.setContent(JSON.stringify(out));
+              },
               nowSubmit : function(inSource, inEvent) {
                   var self = this;
                   var cbOK = function(msg) {
-//                      self.$.opList.setOp(msg.op);
+                      self.writeResults(msg);
                       console.log(JSON.stringify(msg));
                   };
                   var cbError = function(error) {
@@ -197,7 +212,10 @@ enyo.kind({
               nowQuery: function() {
                   var self = this;
                   var cbOK = function(msg) {
-//                      self.$.opList.setOp(msg.op);
+                      self.op && self.history.push(self.op);
+                      self.op = conduit.parse(msg.opStr);
+                      self.display();
+                      self.writeResults(msg.acc || {});
                       console.log(JSON.stringify(msg));
                   };
                   var cbError = function(error) {
