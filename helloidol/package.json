@@ -8,6 +8,7 @@
       "caf_security" : ">= 0.0.1",
       "caf_session" : ">= 0.0.1",
       "caf_conduit" : ">= 0.0.1",
+      "caf_pull" : ">= 0.0.1",
       "caf_idol" : ">= 0.0.1"
    },
   "main": "index",

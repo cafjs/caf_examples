@@ -113,9 +113,15 @@
             "description": "Access to idol web APIs\n Properties: <baseURL> Default URL prefix\n <postURL> Default URL postfix \n <proxy> Optional http proxy URL\n",
             "env": {
                 "baseURL": "https://api.idolondemand.com/1/api/sync/",
-                "postURL": "/v1",
-                "proxy": "http://web-proxy.hpl.hp.com:8088"
+                "postURL": "/v1"
                 }
+        },
+        {
+            "module": "caf_pull/plug",
+            "name": "pull_mux",
+            "description": "Shared connection to a service that caches files locally\n Properties: \n",
+            "env": {
+            }
         }
     ],
     "crons": [
@@ -132,7 +138,7 @@
             "name": "ripper",
             "description": "Cron job for getting rid of deadlocked CAs",
             "env": {
-
+                "interval" : 15
 
             }
         },
@@ -141,7 +147,7 @@
             "name": "pulser",
             "description": "Cron job for enabling autonomous computation of CAs",
             "env": {
-                "interval" : 2
+                "interval" : 5
             }
         },
         {

@@ -37,6 +37,13 @@
             "env" : {
 
             }
+        },
+        {
+            "module": "caf_pull/plug_ca",
+            "name": "pull_ca",
+            "description": "Provides a  service  to cache files locally for this CA",
+            "env" : {
+            }
         }
     ],
     "proxies" : [
@@ -69,6 +76,14 @@
             "module": "caf_idol/proxy",
             "name": "idol",
             "description": "Proxy to Idol API",
+            "env" : {
+
+            }
+        },
+        {
+            "module": "caf_pull/proxy",
+            "name": "pull",
+            "description": "Access to a service to cache files locally",
             "env" : {
 
             }
