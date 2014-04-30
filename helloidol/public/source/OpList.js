@@ -56,7 +56,8 @@ enyo.kind({
                           }
                       }
                   };
-                  prettyPrint(this.data);
+//                  prettyPrint(this.data);
+                  str = JSON.stringify(this.data);
                   this.$.dataTag.setContent(str);
                   return true;
               }

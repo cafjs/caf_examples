@@ -48,6 +48,21 @@ var methods = exports.methods = {
             cb(null);
         }
     },
+    'clearAll': function(deleteKey, cb) {
+        var self = this;
+        if (deleteKey) {
+            this.$.idol.deleteKey();
+        }
+        this.state.opStr = null;
+        this.scratch.op = null;
+        this.state.acc = {};
+        this.scratch.inputs = {};
+        var all = this.$.pull.listResources() || [];
+        all.forEach(function(x) {
+                        self.$.pull.removeResource(x);
+                    });
+        cb(null);
+    },
     'addKey' : function(key, cb) {
         this.$.idol.addKey(key);
         cb(null);
@@ -130,6 +145,23 @@ var methods = exports.methods = {
             } else {
                 cb(null);
             }
+        }
+    },
+    // override idol proxy methods
+    'explodecontainer' : function(acc, args, deps, label, cb) {
+        var self = this;
+        if (args && typeof args.url === 'string') {
+            var cb1 = function(err, acc) {
+                if (err) {
+                    cb(err, acc);
+                } else {
+                    self.addInput(label, args.url, cb);
+                }
+            };
+            this.$.idol.explodecontainer(acc, args, deps, label, cb1);
+        } else {
+            cb('Error: explodecontainer: missing URL in ' +
+               JSON.stringify(args));
         }
     }
 };
