@@ -1,3 +1,9 @@
+var IDOL_APIs = ['detectlanguage', 'explodecontainer',
+                 'readbarcode','addtotextindex', 'extractentity',
+                 'expandterm', 'extracttext', 'findfaces','findsimilar',
+                 'highlight', 'detectimage', 'view', 'ocr', 'query',
+                 'dynamicthesaurus', 'detectsentiment', 'storeobject',
+                 'tokenize','createtextindex','deletetextindex', 'listindex'];
 enyo.kind({
               name: 'App',
               classes: 'onyx enyo-fit',
@@ -7,7 +13,7 @@ enyo.kind({
               history:[],
               mySession: null,
               components: [
-                  {kind: 'onyx.Toolbar', content: 'Conduit Hello World!'},
+                  {kind: 'onyx.Toolbar', content: 'Idol Pipes Hello World!'},
                   {tag: 'br'},
                   {kind: 'ca.LoginContext', name: 'login',
                    onSession: 'newSession', onNotification: 'newNotif'},
@@ -32,18 +38,18 @@ enyo.kind({
                    components: [
                        {kind: 'onyx.InputDecorator',
                         components: [
-                            {kind: 'onyx.Input', name: 'constantId',
+                            {kind: 'onyx.Input', name: 'inputId',
                              placeholder: 'unique ID'}
                          ]
                        },
                        {kind: 'onyx.InputDecorator',
                         components: [
-                            {kind: 'onyx.Input', name: 'constantVal',
-                             placeholder: '0'}
+                            {kind: 'onyx.Input', name: 'inputVal',
+                             placeholder: 'http://...'}
                          ]
                        },
-                       {kind: 'onyx.Button', name: 'constant',
-                        content: 'Constant', ontap: 'addConstant'}
+                       {kind: 'onyx.Button', name: 'input',
+                        content: 'Add Input', ontap: 'addInput'}
                    ]},
                   {classes:  'onyx-toolbar-inline',
                    components: [
@@ -87,16 +93,21 @@ enyo.kind({
                    ]
                   },
                   {kind: 'onyx.Toolbar', content: 'Manage'},
-                  {classes:  'onyx-toolbar-inline',
+                  {kind: 'FittableColumns', classes:  'onyx-toolbar-inline',
                    components: [
                        {kind: 'onyx.Button', name: 'submit',
                         content: 'Submit', ontap: 'nowSubmit'},
-                       {kind: 'onyx.Button', name: 'query',
-                        content: 'Query', ontap: 'nowQuery'},
                        {kind: 'onyx.Button', name: 'undo',
                         content: 'Undo', ontap: 'undo'},
                        {kind: 'onyx.Button', name: 'clear',
-                        content: 'Clear', ontap: 'nowClear'}
+                        content: 'Clear', ontap: 'nowClear'},
+                       {fit: true},
+                       {kind: 'onyx.Button', name: 'query',
+                        content: 'Refresh', ontap: 'nowQuery'},
+                       {kind: 'onyx.ToggleButton', onChange: 'autoToggled',
+                        onContent: 'auto', offContent: 'manual',
+                        value: true, name: 'autoSwitch'}
+
                    ]}
               ],
               addSerial: function(inSource, inEvent) {
@@ -125,11 +136,11 @@ enyo.kind({
                       return true;
                   }
               },
-              addConstant: function(inSource, inEvent) {
+              addInput: function(inSource, inEvent) {
                   try {
                       this.history.push(this.op);
-                      var val = parseInt(this.$.constantVal.getValue()) || 0;
-                      var id = this.$.constantId.getValue() || null;
+                      var val = parseInt(this.$.inputVal.getValue()) || 0;
+                      var id = this.$.inputId.getValue() || null;
                       this.op = this.op.doCons({'value' : val}, null,  id);
                       this.display();
                   } catch (e) {
@@ -173,8 +184,7 @@ enyo.kind({
                   console.log(JSON.stringify(all));
               },
               nowClear : function(inSource, inEvent) {
-                  this.op = conduit.newInstance(['doCons', 'doPlus', 'doMinus',
-                                                 'doDiv', 'doMul']);
+                  this.op = conduit.newInstance(IDOL_APIs);
                   this.history = [];
                   this.display();
                   return true;
@@ -203,8 +213,7 @@ enyo.kind({
               newSession: function(inSource, inEvent) {
                   this.mySession = inEvent.session;
                   this.caOwner = inEvent.caOwner;
-                  this.op = conduit.newInstance(['doCons', 'doPlus', 'doMinus',
-                                                 'doDiv', 'doMul']);
+                  this.op = conduit.newInstance(IDOL_APIs);
 
                   this.nowQuery();
                   return true;
@@ -229,12 +238,21 @@ enyo.kind({
               },
               undo: function(inSource, inEvent) {
                   var last = this.history.pop() ||
-                      conduit.newInstance(['doCons', 'doPlus', 'doMinus',
-                                           'doDiv', 'doMul']);
+                      conduit.newInstance(IDOL_APIs);
                   this.op = last;
                   this.display();
                   return true;
+              },
+             autoToggled: function(inSource, inEvent) {
+                  var autoOn = this.$.autoSwitch.getValue();
+                  var cbOK = function() {
+                      console.log('autoToggled OK:' + autoOn);
+                  };
+                  this.mySession &&
+                      this.mySession.remoteInvoke('autoMode', [autoOn], cbOK,
+                                                  this.cbError);
               }
+
           });
 
 

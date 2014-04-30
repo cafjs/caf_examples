@@ -117,7 +117,7 @@ var methods = exports.methods = {
                     if (err) {
                         cb(err, val);
                     } else {
-                        if (!val.error) { // TODO: handle app errors
+                        if (val && !self.$.isError(val)) {
                         // Do not retry until file changes (or explicit call)
                             self.scratch.inputs[alias] = {'version' : version};
                         }
