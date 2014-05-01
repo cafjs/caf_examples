@@ -35,8 +35,8 @@ var methods = exports.methods = {
         this.state = (cp && cp.state) || {};
         if (typeof this.state.opStr === 'string') {
             var op = conduit.parse(this.state.opStr);
-            this.scratch.op = op.__behavior__(utils.cloneAndMix(this.$.idol,
-                                                                methods));
+            var m  = utils.cloneAndMix(this.$.idol, utils.bind(this, methods));
+            this.scratch.op = op.__behavior__(m);
         }
         this.scratch.inputs = {};
         cb(null);
@@ -74,8 +74,8 @@ var methods = exports.methods = {
     'newOp': function(opStr, cb) {
         this.state.opStr = opStr;
         var op = conduit.parse(opStr);
-        this.scratch.op = op.__behavior__(utils.cloneAndMix(this.$.idol,
-                                                            methods));
+        var m  = utils.cloneAndMix(this.$.idol, utils.bind(this, methods));
+        this.scratch.op = op.__behavior__(m);
         this.state.acc = {};
         this.scratch.op.__fold__(this.state.acc, cb);
     },
