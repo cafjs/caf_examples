@@ -233,9 +233,15 @@ enyo.kind({
               writeResults : function(res) {
                   var out = {};
                   Object.keys(res).forEach(function(x) {
-                                               out[x] = res[x].data.value;
+                                               out[x] = res[x].data;
                                            });
                   this.$.resultTag.setContent(JSON.stringify(out));
+              },
+              newNotif :function(inSource, inEvent) {
+                  var msg = inEvent[0];
+                  this.writeResults(msg);
+                  console.log(JSON.stringify(msg));
+                  return true;
               },
               nowSubmit : function(inSource, inEvent) {
                   var self = this;

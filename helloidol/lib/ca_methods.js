@@ -65,11 +65,11 @@ var methods = exports.methods = {
     },
     'addKey' : function(key, cb) {
         this.$.idol.addKey(key);
-        cb(null);
+        cb && cb(null);
     },
     'deleteKey' : function(cb) {
         this.$.idol.deleteKey();
-        cb(null);
+        cb && cb(null);
     },
     'newOp': function(opStr, cb) {
         this.state.opStr = opStr;
@@ -95,11 +95,11 @@ var methods = exports.methods = {
     // Managing inputs
     'addInput' : function(alias, url, cb) {
         this.$.pull.addResource(alias, url, 'updatedFile');
-        cb(null, 'ok');
+        cb && cb(null, 'ok');
     },
     'removeInput' : function(alias, cb) {
         this.$.pull.removeResource(alias);
-        cb(null, 'ok');
+        cb && cb(null, 'ok');
     },
     'listInputs' : function(cb) {
         var all = this.$.pull.listResources();
@@ -132,7 +132,7 @@ var methods = exports.methods = {
                     if (err) {
                         cb(err, val);
                     } else {
-                        if (val && !self.$.isError(val)) {
+                        if (val && !self.$.idol.isError(val)) {
                         // Do not retry until file changes (or explicit call)
                             self.scratch.inputs[alias] = {'version' : version};
                         }
@@ -155,7 +155,8 @@ var methods = exports.methods = {
                 if (err) {
                     cb(err, acc);
                 } else {
-                    self.addInput(label, args.url, cb);
+                    self.addInput(label, args.url);
+                    cb(err, acc);
                 }
             };
             this.$.idol.explodecontainer(acc, args, deps, label, cb1);
