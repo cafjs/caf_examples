@@ -35,19 +35,19 @@ var session = new cli.Session({url:"http://helloidol.vcap.me:3000/ca/antonio_xx"
                                //log: log
                               })
 
-
-var IDOL_APIs = ['detectlanguage', 'explodecontainer',
-                 'readbarcode','addtotextindex', 'extractentity',
-                 'expandterm', 'extracttext', 'findfaces','findsimilar',
-                 'highlight', 'detectimage', 'view', 'ocr', 'query',
-                 'dynamicthesaurus', 'detectsentiment', 'storeobject',
-                 'tokenize','createtextindex','deletetextindex', 'listindex'];
+var IDOL_APIs =  ['identifylanguage', 'expandcontainer',
+                  'recognizebarcodes', 'extractentities',
+                  'expandterms', 'extracttext', 'detectfaces',
+                  'findsimilar', 'highlighttext', 'recognizeimages',
+                  'viewdocument', 'ocrdocument', 'querytextindex',
+                  'findrelatedconcepts', 'analyzesentiment', 'storeobject',
+                  'tokenizetext'];
 
 var c = conduit.newInstance(IDOL_APIs);
 
-c = c.explodecontainer({'url': REPO_PREFIX + 'foo.tar'}, null,  'c1')
-    .detectlanguage({'filter' : ['*.txt']}, {'input': 'c1'} , 'c2')
-    .readbarcode({'filter':['photos/*.jpg']}, {'input': 'c1'} , 'c3')
+c = c.expandcontainer({'url': REPO_PREFIX + 'foo.tar'}, null,  'c1')
+    .identifylanguage({'filter' : ['*.txt']}, {'input': 'c1'} , 'c2')
+    .recognizebarcodes({'filter':['photos/*.jpg']}, {'input': 'c1'} , 'c3')
     .__par__()
     .__seq__();
 

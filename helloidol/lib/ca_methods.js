@@ -72,12 +72,16 @@ var methods = exports.methods = {
         cb && cb(null);
     },
     'newOp': function(opStr, cb) {
-        this.state.opStr = opStr;
-        var op = conduit.parse(opStr);
-        var m  = utils.cloneAndMix(this.$.idol, utils.bind(this, methods));
-        this.scratch.op = op.__behavior__(m);
-        this.state.acc = {};
-        this.scratch.op.__fold__(this.state.acc, cb);
+        if (opStr && (typeof opStr === 'string')) {
+            this.state.opStr = opStr;
+            var op = conduit.parse(opStr);
+            var m  = utils.cloneAndMix(this.$.idol, utils.bind(this, methods));
+            this.scratch.op = op.__behavior__(m);
+            this.state.acc = {};
+            this.scratch.op.__fold__(this.state.acc, cb);
+        } else {
+            cb('newOp: Ignoring input' + JSON.stringify(opStr));
+        }
     },
     'executeOp': function(cb) {
         if (this.scratch.op) {
@@ -148,7 +152,7 @@ var methods = exports.methods = {
         }
     },
     // override idol proxy methods
-    'explodecontainer' : function(acc, args, deps, label, cb) {
+    'expandcontainer' : function(acc, args, deps, label, cb) {
         var self = this;
         if (args && typeof args.url === 'string') {
             var cb1 = function(err, acc) {
@@ -159,9 +163,9 @@ var methods = exports.methods = {
                     cb(err, acc);
                 }
             };
-            this.$.idol.explodecontainer(acc, args, deps, label, cb1);
+            this.$.idol.expandcontainer(acc, args, deps, label, cb1);
         } else {
-            cb('Error: explodecontainer: missing URL in ' +
+            cb('Error: expandcontainer: missing URL in ' +
                JSON.stringify(args));
         }
     }

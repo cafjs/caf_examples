@@ -6,40 +6,31 @@ enyo.kind({
               style: 'border-style: solid; border-width: 1px; ' +
                   'padding: 5px; margin: 5px; min-height: 10px',
               published: {
-                  opId: '',
                   data: ''
               },
               components: [
-                  {tag: 'b', name: 'opIdTag'},
                   {tag: 'span', allowHtml: true, name: 'dataTag'}
               ],
-              opIdTagChanged: function() {
-                  this.$.opIdTag.setContent(this.opId + ': ');
-                  return true;
-              },
               dataChanged: function() {
                   var str = '';
-                  var opCh = {'detectlanguage': 'DetLan',
-                              'explodecontainer' : 'ExpCon',
-                              'readbarcode': 'ReadBar',
-                              'addtotextindex': 'AddInd',
-                              'extractentity': 'ExtEnt',
-                              'expandterm': 'ExpTerm',
-                              'extracttext': 'ExtText',
-                              'findfaces': 'FindFace',
-                              'findsimilar': 'FindSim',
-                              'highlight': 'HighLi',
-                              'detectimage': 'DetIma',
-                              'view': 'View',
-                              'ocr': 'OCR',
-                              'query':'Query',
-                              'dynamicthesaurus': 'DynThes',
-                              'detectsentiment': 'DetSen',
-                              'storeobject': 'StoObj',
-                              'tokenize': 'Tok',
-                              'createtextindex': 'CreInd',
-                              'deletetextindex': 'DelInd',
-                              'listindex': 'LisInd'};
+                  var opCh = {
+                      'identifylanguage': 'IdeLan',
+                      'expandcontainer' : 'ExpCon',
+                      'recognizebarcodes': 'RecBar',
+                      'extractentities': 'ExtEnt',
+                      'expandterms': 'ExpTer',
+                      'extracttext': 'ExtTex',
+                      'detectfaces': 'DetFac',
+                      'findsimilar':'FinSim',
+                      'highlighttext': 'HigTex',
+                      'recognizeimages': 'RecIma',
+                      'viewdocument': 'ViewDoc',
+                      'ocrdocument': 'OCRDoc',
+                      'querytextindex':'Query',
+                      'findrelatedconcepts':'FinRel',
+                      'analyzesentiment':'AnaSen',
+                      'storeobject': 'StoObj',
+                      'tokenizetext': 'TokTex'};
                   var prettyPrint = function(data) {
                       var findDeps = function(deps) {
                           var result = [];
@@ -137,7 +128,6 @@ enyo.kind({
               setupItem: function(inSender, rowHandle) {
                   var entry = this.stack[rowHandle.index];
                   var oneOp = rowHandle.item.$.oneOp;
-                  //oneOp.setOpId(key);
                   oneOp.setData(entry);
                   return true;
               }

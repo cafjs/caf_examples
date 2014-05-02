@@ -1,10 +1,12 @@
 
-var IDOL_APIs = ['detectlanguage', 'explodecontainer',
-                 'readbarcode','addtotextindex', 'extractentity',
-                 'expandterm', 'extracttext', 'findfaces','findsimilar',
-                 'highlight', 'detectimage', 'view', 'ocr', 'query',
-                 'dynamicthesaurus', 'detectsentiment', 'storeobject',
-                 'tokenize','createtextindex', 'deletetextindex', 'listindex'];
+var IDOL_APIs =  ['identifylanguage', 'expandcontainer',
+                  'recognizebarcodes', 'extractentities',
+                  'expandterms', 'extracttext', 'detectfaces',
+                  'findsimilar', 'highlighttext', 'recognizeimages',
+                  'viewdocument', 'ocrdocument', 'querytextindex',
+                  'findrelatedconcepts', 'analyzesentiment', 'storeobject',
+                  'tokenizetext'];
+
 enyo.kind({
               name: 'App',
               classes: 'onyx enyo-fit',
@@ -58,12 +60,12 @@ enyo.kind({
                        },
                        {kind: 'onyx.InputDecorator',
                         components: [
-                            {kind: 'onyx.Input', name: 'explodeVal',
+                            {kind: 'onyx.Input', name: 'expandVal',
                              placeholder: 'http://...'}
                          ]
                        },
-                       {kind: 'onyx.Button', name: 'explode',
-                        content: 'Explode Container', ontap: 'addExplode'}
+                       {kind: 'onyx.Button', name: 'expand',
+                        content: 'Expand Container', ontap: 'addExpand'}
                    ]},
                   {classes:  'onyx-toolbar-inline',
                    components: [
@@ -96,26 +98,23 @@ enyo.kind({
                         components: [
                             {content: 'API'},
                             {kind: 'onyx.Menu', floating: true, components: [
-                                 {content:'detectlanguage'},
-                                 {content:'readbarcode'},
-                                 {content:'addtotextindex'},
-                                 {content:'extractentity'},
-                                 {content: 'expandterm'},
-                                 {content:  'extracttext'},
-                                 {content: 'findfaces'},
+                                 {content: 'identifylanguage'},
+                                 {content: 'expandcontainer'},
+                                 {content: 'recognizebarcodes'},
+                                 {content: 'extractentities'},
+                                 {content: 'expandterms'},
+                                 {content: 'extracttext'},
+                                 {content: 'detectfaces'},
                                  {content: 'findsimilar'},
-                                 {content: 'highlight'},
-                                 {content:  'detectimage'},
-                                 {content:  'view'},
-                                 {content:  'ocr'},
-                                 {content:  'query'},
-                                 {content:  'dynamicthesaurus'},
-                                 {content:  'detectsentiment'},
-                                 {content:  'storeobject'},
-                                 {content:  'tokenize'},
-                                 {content: 'createtextindex'},
-                                 {content:  'deletetextindex'},
-                                 {content:  'listindex'}
+                                 {content: 'highlighttext'},
+                                 {content: 'recognizeimages'},
+                                 {content: 'viewdocument'},
+                                 {content: 'ocrdocument'},
+                                 {content: 'querytextindex'},
+                                 {content: 'findrelatedconcepts'},
+                                 {content: 'analyzesentiment'},
+                                 {content: 'storeobject'},
+                                 {content: 'tokenizetext'}
                              ]}
                         ]}
 
@@ -125,11 +124,8 @@ enyo.kind({
                    ]
                   },
                   {kind: 'onyx.Toolbar', content: 'Results'},
-                  {kind: 'enyo.Control', tag:'div',
-                   style: 'border-style: solid; border-width: 1px; ' +
-                   'padding: 5px; margin: 5px; min-height: 40px',
-                   components: [
-                       {tag: 'span', name: 'resultTag'}
+                  {kind: 'Scroller', style: " height: 200px;", components: [
+                       {kind: 'ResultList', name: 'resultList'}
                    ]
                   },
                   {kind: 'onyx.Toolbar', content: 'Manage'},
@@ -171,12 +167,12 @@ enyo.kind({
                       return true;
                   }
               },
-              addExplode: function(inSource, inEvent) {
+              addExpand: function(inSource, inEvent) {
                   try {
                       this.history.push(this.op);
-                      var url = this.$.explodeVal.getValue();
+                      var url = this.$.expandVal.getValue();
                       var id = this.$.inputId.getValue() || null;
-                      this.op = this.op.explodecontainer({'url' : url}, null,
+                      this.op = this.op.expandcontainer({'url' : url}, null,
                                                          id);
                       this.display();
                   } catch (e) {
@@ -223,6 +219,7 @@ enyo.kind({
                   var cbOK = function(msg) {
                       self.op = conduit.newInstance(IDOL_APIs);
                       self.history = [];
+                      self.writeResults({});
                       self.display();
                   };
                  this.mySession && this.mySession
@@ -231,11 +228,7 @@ enyo.kind({
                   return true;
               },
               writeResults : function(res) {
-                  var out = {};
-                  Object.keys(res).forEach(function(x) {
-                                               out[x] = res[x].data;
-                                           });
-                  this.$.resultTag.setContent(JSON.stringify(out));
+                  this.$.resultList.setResult(res);
               },
               newNotif :function(inSource, inEvent) {
                   var msg = inEvent[0];
@@ -258,7 +251,6 @@ enyo.kind({
                   this.mySession = inEvent.session;
                   this.caOwner = inEvent.caOwner;
                   this.op = conduit.newInstance(IDOL_APIs);
-
                   this.nowQuery();
                   return true;
               },
@@ -266,8 +258,13 @@ enyo.kind({
                   var self = this;
                   var cbOK = function(msg) {
                       self.$.autoSwitch.setValue(msg.autoOn);
-                      self.op && self.history.push(self.op);
-                      self.op = conduit.parse(msg.opStr);
+                      if (msg.opStr) {
+                          var newOp = conduit.parse(msg.opStr);
+                          if (newOp) {
+                              self.op && self.history.push(self.op);
+                              self.op = newOp;
+                          }
+                      };
                       self.display();
                       self.writeResults(msg.acc || {});
                       console.log(JSON.stringify(msg));
