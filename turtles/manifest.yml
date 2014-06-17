@@ -1,0 +1,9 @@
+applications:
+  .:
+    name: turtles
+    mem: 256
+    instances: 1
+    services:
+      ${name}-redis:
+        type: redis
+        

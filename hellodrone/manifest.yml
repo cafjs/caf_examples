@@ -1,0 +1,9 @@
+applications:
+  .:
+    name: hellodrone
+    mem: 128
+    instances: 1
+    services:
+      ${name}-redis:
+        type: redis
+        

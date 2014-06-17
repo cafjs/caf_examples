@@ -1,0 +1,9 @@
+applications:
+  .:
+    name: blinksync
+    mem: 64
+    instances: 1
+    services:
+      ${name}-redis:
+        type: redis
+        

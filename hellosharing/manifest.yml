@@ -1,0 +1,9 @@
+applications:
+  .:
+    name: hellosharing
+    mem: 64
+    instances: 1
+    services:
+      ${name}-redis:
+        type: redis
+        

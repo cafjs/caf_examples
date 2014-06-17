@@ -1,0 +1,9 @@
+applications:
+  .:
+    name: tutorial1a
+    mem: 64
+    instances: 1
+    services:
+      ${name}-redis:
+        type: redis
+        
