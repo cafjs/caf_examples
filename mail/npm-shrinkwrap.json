@@ -50,7 +50,6 @@
     "imap": {
       "version": "0.8.10",
       "from": "imap@>= 0.2.8",
-      "resolved": "http://registry.npmjs.org/imap/-/imap-0.8.10.tgz",
       "dependencies": {
         "utf7": {
           "version": "1.0.0",
@@ -60,12 +59,10 @@
         "readable-stream": {
           "version": "1.1.13-1",
           "from": "readable-stream@1.1.x",
-          "resolved": "http://registry.npmjs.org/readable-stream/-/readable-stream-1.1.13-1.tgz",
           "dependencies": {
             "core-util-is": {
               "version": "1.0.1",
-              "from": "core-util-is@~1.0.0",
-              "resolved": "http://registry.npmjs.org/core-util-is/-/core-util-is-1.0.1.tgz"
+              "from": "core-util-is@~1.0.0"
             },
             "isarray": {
               "version": "0.0.1",
@@ -74,8 +71,7 @@
             },
             "string_decoder": {
               "version": "0.10.25-1",
-              "from": "string_decoder@~0.10.x",
-              "resolved": "http://registry.npmjs.org/string_decoder/-/string_decoder-0.10.25-1.tgz"
+              "from": "string_decoder@~0.10.x"
             },
             "inherits": {
               "version": "2.0.1",
