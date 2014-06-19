@@ -109,7 +109,7 @@
                         }
                     },
                     "accounts": {
-                        "serviceUrl" : "http://accounts.cafjs.com/app.html",
+                        "serviceUrl" : "https://accounts.cafjs.com/app.html",
                         "serviceName" : "accounts",
                         "pubFile" : "rsa_pub.pem",
                         "unrestricted" : true

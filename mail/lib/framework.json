@@ -105,7 +105,7 @@
                     },
                     "accounts": {
                         "serviceName" : "accounts",
-                        "serviceUrl" : "http://accounts.cafjs.com/app.html",
+                        "serviceUrl" : "https://accounts.cafjs.com/app.html",
                         "pubFile" : "rsa_pub.pem",
                         "unrestricted" : false
                     }
