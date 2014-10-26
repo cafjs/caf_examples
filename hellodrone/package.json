@@ -1,15 +1,15 @@
 {
   "name": "caf_drone",
   "description": "Cloud Assistants AR drone demo",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "author": "Antonio Lain <antlai@cafjs.com>",
   "dependencies": {
-      "caf_ardrone" : ">= 0.0.1",
-      "caf_core" : ">= 0.0.1",
-      "caf_security" : ">= 0.0.1",
-      "caf_session" : ">= 0.0.1",
-      "caf_iot" : ">= 0.0.1"
+      "caf_ardrone" : "^0.1",
+      "caf_core" : "^0.1",
+      "caf_security" : "^0.1",
+      "caf_session" : "^0.1",
+      "caf_iot" : "^0.1"
    },
   "main": "index",
-  "engines": { "node": "0.8.x" }
+  "engines": { "node": ">= 0.8.1" }
 }

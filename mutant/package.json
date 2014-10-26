@@ -1,15 +1,15 @@
 {
   "name": "caf_mutant",
   "description": "Cloud Assistants example showing transactional shared abstractions that change CA behavior",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Antonio Lain <antlai@cafjs.com>",
   "dependencies": {
-      "caf_core" : ">= 0.0.1",
-      "caf_security" : ">= 0.0.1",
-      "caf_sharing" : ">= 0.0.1",
-      "caf_session" : ">= 0.0.1",
-      "caf_profiler" : ">= 0.0.1"
+      "caf_core" : "^0.1",
+      "caf_security" : "^0.1",
+      "caf_sharing" : "^0.1",
+      "caf_session" : "^0.1",
+      "caf_profiler" : "^0.1"
   },
   "main": "index",
-  "engines": { "node": "0.8.x" }
+  "engines": { "node": ">= 0.8.1" }
 }

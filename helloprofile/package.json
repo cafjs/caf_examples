@@ -1,14 +1,14 @@
 {
   "name": "caf_helloprofile",
   "description": "Cloud Assistants Example Profiler",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Antonio Lain <antlai@cafjs.com>",
   "dependencies": {
-      "caf_core" : ">= 0.0.1",
-      "caf_prop" : ">= 0.0.1",
-      "caf_session" : ">= 0.0.1",
-      "caf_profiler" : ">= 0.0.1"
+      "caf_core" : "^0.1",
+      "caf_prop" : "^0.1",
+      "caf_session" : "^0.1",
+      "caf_profiler" : "^0.1"
    },
   "main": "index",
-  "engines": { "node": "0.8.x" }
+  "engines": { "node": ">= 0.8.1" }
 }

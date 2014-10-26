@@ -1,15 +1,15 @@
 {
   "name": "caf_turtles",
   "description": "Turtles: deployer app",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "author": "Antonio Lain <antlai@cafjs.com>",
   "dependencies": {
-      "caf_core" : ">= 0.0.1",
-      "caf_pull" : ">= 0.0.1",
-      "caf_security" : ">= 0.0.1",
-      "caf_deploy" : ">= 0.0.1",
-      "caf_session" : ">= 0.0.1"
+      "caf_core" : "^0.1",
+      "caf_pull" : "^0.1",
+      "caf_security" : "^0.1",
+      "caf_deploy" : "^0.1",
+      "caf_session" : "^0.1"
    },
   "main": "index",
-  "engines": { "node": "0.8.x" }
+  "engines": { "node": ">= 0.8.1" }
 }

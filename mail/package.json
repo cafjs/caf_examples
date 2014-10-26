@@ -1,16 +1,16 @@
 {
   "name": "caf_mail",
   "description": "Cloud Assistants Mail Example ",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Antonio Lain <antlai@cafjs.com>",
   "dependencies": {
-      "caf_core" : ">= 0.0.1",
+      "caf_core" : "^0.1",
       "async" : ">= 0.1.18",
       "imap" : ">= 0.2.8",
-      "caf_security" : ">= 0.0.1",
-      "caf_imap" : ">= 0.0.1",
-      "caf_session" : ">= 0.0.1"
+      "caf_security" : "^0.1",
+      "caf_imap" : "^0.1",
+      "caf_session" : "^0.1"
   },
   "main": "index",
-  "engines": { "node": "0.8.x" }
+  "engines": { "node": ">= 0.8.1" }
 }
